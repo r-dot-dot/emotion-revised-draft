@@ -161,3 +161,163 @@ function Card({ v }: { v: V }) {
     </article>
   );
 }
+
+type Customization = { id: string; label: string; fee: number };
+
+const CUSTOMIZATIONS: Customization[] = [
+  { id: "color", label: "Specific paint color", fee: 500 },
+  { id: "interior", label: "Specific interior / trim", fee: 400 },
+  { id: "wheels", label: "Upgraded wheels", fee: 350 },
+  { id: "tow", label: "Tow package", fee: 600 },
+  { id: "l2", label: "Level 2 home charger install", fee: 1200 },
+  { id: "warranty", label: "Extended warranty", fee: 1500 },
+  { id: "detail", label: "Full detail + ceramic coat", fee: 450 },
+  { id: "outofstate", label: "Out-of-state sourcing", fee: 750 },
+];
+
+function ReceiptCalculator() {
+  const [carBudget, setCarBudget] = useState(22000);
+  const [savings, setSavings] = useState(9500);
+  const [picked, setPicked] = useState<Record<string, boolean>>({});
+
+  const customList = CUSTOMIZATIONS.filter((c) => picked[c.id]);
+  const customTotal = customList.reduce((a, c) => a + c.fee, 0);
+  const finalTotal = carBudget + customTotal - savings;
+
+  return (
+    <section className="py-14">
+      <div className="mx-auto max-w-7xl px-4">
+        <SectionHead
+          kicker="Estimate your bill"
+          title="Car budget + customizations − rebate savings = your final total."
+          lead="Pick the extras you want in your search brief. Each one adds a fee. Your rebate stack comes off the bottom line."
+        />
+        <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
+          {/* Inputs */}
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
+            <h3 className="text-lg font-bold text-ink">Your brief</h3>
+            <div className="mt-5 space-y-5">
+              <div>
+                <label className="text-xs font-bold uppercase tracking-widest text-ink-soft">
+                  Car budget
+                </label>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className="text-ink-soft">$</span>
+                  <input
+                    type="range" min={10000} max={60000} step={500}
+                    value={carBudget}
+                    onChange={(e) => setCarBudget(+e.target.value)}
+                    className="flex-1 accent-primary"
+                  />
+                  <span className="w-24 text-right font-display font-bold text-primary">
+                    ${carBudget.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold uppercase tracking-widest text-ink-soft">
+                  Estimated rebate savings
+                </label>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className="text-ink-soft">$</span>
+                  <input
+                    type="range" min={0} max={20000} step={250}
+                    value={savings}
+                    onChange={(e) => setSavings(+e.target.value)}
+                    className="flex-1 accent-primary"
+                  />
+                  <span className="w-24 text-right font-display font-bold text-primary">
+                    ${savings.toLocaleString()}
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-ink-soft">
+                  Use the <a className="text-primary underline" href="/calculator">savings calculator</a> to size this precisely.
+                </p>
+              </div>
+
+              <div>
+                <div className="text-xs font-bold uppercase tracking-widest text-ink-soft">
+                  Customizations (each adds a fee)
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {CUSTOMIZATIONS.map((c) => {
+                    const on = !!picked[c.id];
+                    return (
+                      <button
+                        key={c.id}
+                        onClick={() => setPicked((p) => ({ ...p, [c.id]: !on }))}
+                        className={`flex items-center justify-between rounded-xl border px-3 py-2.5 text-left text-sm transition ${
+                          on
+                            ? "border-primary bg-primary/10 text-ink"
+                            : "border-border bg-background text-ink-soft hover:border-ink/30"
+                        }`}
+                      >
+                        <span className="font-semibold">{c.label}</span>
+                        <span className={`text-xs font-bold ${on ? "text-primary" : "text-ink-soft"}`}>
+                          +${c.fee.toLocaleString()}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Receipt */}
+          <div className="rounded-3xl bg-background p-1 shadow-lg">
+            <div className="rounded-[calc(1.5rem-4px)] border border-dashed border-ink/20 bg-card p-6 font-mono text-sm text-ink md:p-8">
+              <div className="flex items-center gap-2 text-ink-soft">
+                <Receipt className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-widest">Estimated receipt</span>
+              </div>
+              <div className="mt-4 flex items-center justify-between border-b border-dashed border-ink/20 pb-2">
+                <span>Car budget</span>
+                <span className="font-semibold">${carBudget.toLocaleString()}</span>
+              </div>
+
+              <div className="mt-3 text-xs font-bold uppercase tracking-widest text-ink-soft">
+                Customization fees
+              </div>
+              <ul className="mt-2 space-y-1.5">
+                {customList.length === 0 && (
+                  <li className="text-xs italic text-ink-soft">— none selected —</li>
+                )}
+                {customList.map((c) => (
+                  <li key={c.id} className="flex items-center justify-between">
+                    <span>+ {c.label}</span>
+                    <span>${c.fee.toLocaleString()}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-2 flex items-center justify-between border-b border-dashed border-ink/20 pb-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-ink-soft">Customizations subtotal</span>
+                <span className="font-semibold">+ ${customTotal.toLocaleString()}</span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between border-b border-dashed border-ink/20 pb-2 text-primary">
+                <span>− Rebate savings</span>
+                <span className="font-semibold">− ${savings.toLocaleString()}</span>
+              </div>
+
+              <div className="mt-5 flex items-end justify-between rounded-xl bg-ink px-4 py-4 text-background">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-background/70">Final total</div>
+                  <div className="text-[10px] text-background/60">car + customizations − savings</div>
+                </div>
+                <div className="font-display text-3xl font-bold text-sun">
+                  ${finalTotal.toLocaleString()}
+                </div>
+              </div>
+              <p className="mt-4 text-[11px] text-ink-soft">
+                Estimate only. Actual fees depend on the specific vehicle and rebate approvals.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
