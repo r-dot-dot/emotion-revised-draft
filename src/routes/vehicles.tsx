@@ -71,8 +71,24 @@ function VehiclesPage() {
             recent transactions — your actual out-the-door number depends on the specific
             car and your rebate stack.
           </p>
+
+          {/* Customization fee heads-up */}
+          <div className="mt-8 flex max-w-3xl items-start gap-3 rounded-2xl border border-sun/40 bg-sun-soft p-5">
+            <Info className="mt-0.5 h-5 w-5 flex-none text-sun-foreground" />
+            <div className="text-sm text-ink">
+              <strong className="text-ink">Heads up — each customization adds a fee.</strong>{" "}
+              Every extra you request in your search brief (specific color, options,
+              accessories, upgraded charger, extended warranty) adds to the final bill.
+              Use the receipt calculator below to see how the numbers add up before you
+              lock in your brief.
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Receipt-style fee calculator */}
+      <ReceiptCalculator />
+
 
       <section className="py-10">
         <div className="mx-auto max-w-7xl px-4">
