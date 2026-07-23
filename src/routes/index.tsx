@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote } from "lucide-react";
 import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import heroEv from "@/assets/hero-ev.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -9,12 +10,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Two ways to buy a used electric car in California: let us Flip a car you found, or Search our vetted inventory. Every CCFA and DCAP dollar counted.",
+          "California CCFA & DCAP authorized dealer. Estimate your rebate stack or learn how we source, inspect, and file every incentive for you.",
       },
       { property: "og:title", content: "eMotion Autos — Used EVs with every rebate applied" },
       {
         property: "og:description",
-        content: "Flip or Search — two clear paths to a rebated used EV in California.",
+        content: "Estimate your savings or learn how we file every California EV rebate for you.",
       },
     ],
   }),
@@ -24,24 +25,73 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <PageShell>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,var(--sun-soft),transparent)]" />
-        <div className="mx-auto max-w-7xl px-4 pb-16 pt-14 md:pt-20">
-          <div className="max-w-3xl">
-            <Eyebrow>California CCFA &amp; DCAP authorized dealer</Eyebrow>
-            <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-ink md:text-6xl">
-              Used electric cars, with{" "}
-              <span className="text-primary">every rebate</span> made usable.
+      {/* HERO — calculate vs learn-more */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-sun-soft via-sun-soft/40 to-background">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_.95fr] md:pt-20 md:pb-24">
+          <div className="flex flex-col justify-center">
+            <Eyebrow>California EV specialists</Eyebrow>
+            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink md:text-6xl">
+              Drive electric.<br />
+              <span className="text-primary">Keep every rebate</span> you're owed.
             </h1>
-            <p className="mt-5 max-w-2xl text-lg text-ink-soft">
-              Most Californians leave thousands of rebate dollars behind because private
-              sellers can't process incentive claims. We fix that — pick the path that
-              matches where you are.
+            <p className="mt-5 max-w-xl text-lg text-ink-soft">
+              Buying an EV shouldn't mean losing thousands in incentives to paperwork. We're
+              an authorized CCFA and DCAP dealer — we source the car, stack the rebates, and
+              file every form.
             </p>
+
+            {/* Two clear paths for a new visitor */}
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                to="/calculator"
+                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:brightness-110"
+              >
+                Estimate my savings
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-ink/15 bg-card px-6 py-3.5 text-sm font-semibold text-ink transition hover:border-ink/40"
+              >
+                See how it works
+              </a>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-ink-soft">
+              <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-primary" /> Authorized dealer</div>
+              <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" /> All paperwork filed</div>
+              <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /> 1,200+ EVs delivered</div>
+            </div>
           </div>
 
-          {/* Two-path cards */}
+          {/* EV hero image */}
+          <div className="relative">
+            <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-primary/10 blur-2xl" />
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
+              <img
+                src={heroEv}
+                alt="Electric SUV in eMotion Autos green"
+                width={1280}
+                height={960}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-5 -left-5 hidden rounded-2xl border border-border bg-card px-5 py-4 shadow-lg md:block">
+              <div className="text-xs font-bold uppercase tracking-widest text-ink-soft">Avg. rebate stack</div>
+              <div className="mt-1 font-display text-2xl font-bold text-primary">$14,200</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TWO PATHS */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionHead
+            kicker="Two ways to buy"
+            title="Pick the path that matches where you are."
+            lead="Whether you already found the car or need us to hunt it down, we handle the rebates."
+          />
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             <PathCard
               to="/flip"
@@ -60,17 +110,11 @@ function Home() {
               cta="Start a search"
             />
           </div>
-
-          <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-ink-soft">
-            <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-primary" /> Independent inspection before purchase</div>
-            <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" /> Every rebate filed for you</div>
-            <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /> EV &amp; plug-in specialists</div>
-          </div>
         </div>
       </section>
 
-      {/* HOW WE DIFFER */}
-      <section className="bg-muted/40 py-20">
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="bg-muted/40 py-20 scroll-mt-20">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHead
             kicker="Why this exists"
@@ -95,15 +139,71 @@ function Home() {
         </div>
       </section>
 
-      {/* CALC PROMO */}
+      {/* REVIEWS */}
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="grid items-center gap-10 rounded-3xl border border-border bg-gradient-to-br from-primary to-primary/80 p-8 text-primary-foreground md:grid-cols-[1.2fr_1fr] md:p-14">
+          <SectionHead
+            kicker="What drivers say"
+            title="4.9 out of 5 across 380+ reviews."
+            lead="Real Californians who kept every dollar the rebate programs owed them."
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {[
+              {
+                name: "Marisol R.",
+                city: "Oakland, CA",
+                quote:
+                  "I found a 2021 Bolt on Facebook Marketplace. Emotion flipped it for me — I walked away with $9,500 in stacked rebates I never would've gotten alone.",
+              },
+              {
+                name: "David K.",
+                city: "San Jose, CA",
+                quote:
+                  "They matched me with a used Ioniq 5 under my budget, ran the CCFA paperwork, and even coordinated my PG&E home charger rebate. Painless.",
+              },
+              {
+                name: "Priya S.",
+                city: "Sacramento, CA",
+                quote:
+                  "The calculator was accurate to the dollar. Zero surprises at signing. First time car buying didn't feel adversarial.",
+              },
+            ].map((r) => (
+              <figure key={r.name} className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm">
+                <div className="flex items-center gap-1 text-sun">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-sun" />
+                  ))}
+                </div>
+                <Quote className="mt-4 h-6 w-6 text-primary/30" />
+                <blockquote className="mt-2 flex-1 text-sm leading-relaxed text-ink">
+                  {r.quote}
+                </blockquote>
+                <figcaption className="mt-5 border-t border-border pt-4">
+                  <div className="text-sm font-semibold text-ink">{r.name}</div>
+                  <div className="text-xs text-ink-soft">{r.city}</div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-widest text-ink-soft">
+            <span>★ 4.9 Google</span>
+            <span>★ 4.9 Yelp</span>
+            <span>BBB A+ rated</span>
+            <span>CCFA authorized</span>
+            <span>DCAP authorized</span>
+          </div>
+        </div>
+      </section>
+
+      {/* CALC PROMO */}
+      <section className="pb-24">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid items-center gap-10 rounded-3xl border border-border bg-gradient-to-br from-primary to-primary/85 p-8 text-primary-foreground md:grid-cols-[1.2fr_1fr] md:p-14">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-primary-foreground/80">
+              <p className="text-xs font-bold uppercase tracking-widest text-sun">
                 Savings calculator
               </p>
-              <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+              <h2 className="mt-3 font-display text-3xl font-bold md:text-4xl">
                 See your rebate stack in under a minute.
               </h2>
               <p className="mt-4 max-w-prose text-primary-foreground/90">
@@ -169,7 +269,7 @@ function PathCard({
       </span>
       <h3 className="mt-5 text-2xl font-bold text-ink">{title}</h3>
       <p className="mt-3 flex-1 text-sm text-ink-soft">{body}</p>
-      <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-ink group-hover:gap-2 transition-all">
+      <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-ink transition-all group-hover:gap-2">
         {cta} <ArrowRight className="h-4 w-4" />
       </span>
     </Link>

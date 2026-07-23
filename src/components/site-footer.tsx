@@ -54,7 +54,7 @@ export function SiteFooter() {
               </p>
             </div>
             <form
-              className="flex flex-col gap-2 sm:flex-row"
+              className="flex w-full min-w-0 flex-col gap-2 sm:flex-row"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (email.includes("@")) setSubscribed(true);
@@ -66,9 +66,9 @@ export function SiteFooter() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="flex-1 rounded-full border border-border bg-card px-4 py-2.5 text-sm outline-none ring-primary focus:ring-2"
+                className="w-full min-w-0 flex-1 rounded-full border border-border bg-card px-4 py-2.5 text-sm outline-none ring-primary focus:ring-2"
               />
-              <button className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-background hover:brightness-110">
+              <button className="shrink-0 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-background hover:brightness-110">
                 {subscribed ? "You're in ✓" : "Subscribe"}
               </button>
             </form>
