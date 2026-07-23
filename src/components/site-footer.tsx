@@ -31,7 +31,7 @@ export function SiteFooter() {
               <div className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 text-primary" /><span>1060 Grant Street, Suite 1C · Benicia, CA 94510</span></div>
             </div>
             <a
-              href="https://calendly.com"
+              href="https://calendly.com/ccleminshaw-emotionautos/30min"
               target="_blank"
               rel="noreferrer"
               className="inline-flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"

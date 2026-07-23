@@ -19,44 +19,86 @@ export const Route = createFileRoute("/calculator")({
   component: CalculatorPage,
 });
 
+// Clean Cars 4 All income caps per household size (300% federal poverty level, from CA guide)
+const CC4A_CAP: Record<number, number> = {
+  1: 47880,
+  2: 64920,
+  3: 81960,
+  4: 99000,
+  5: 116040,
+  6: 133080,
+};
+
+function cc4aCap(hh: number) {
+  if (hh <= 6) return CC4A_CAP[Math.max(1, hh)];
+  // extrapolate ~$17,040 per extra person
+  return CC4A_CAP[6] + (hh - 6) * 17040;
+}
+
+// Build discrete income brackets that anchor to real thresholds — CC4A cap,
+// 2× cap (moderate ceiling), and federal §25E / §30D single-filer caps ($75k, $150k).
+function incomeBrackets(hh: number): number[] {
+  const cap = cc4aCap(hh);
+  const raw = [
+    20000,
+    Math.round(cap * 0.5 / 500) * 500,
+    Math.round(cap * 0.75 / 500) * 500,
+    cap,                               // CC4A income limit
+    Math.round(cap * 1.25 / 500) * 500,
+    Math.round(cap * 1.5 / 500) * 500,
+    75000,                             // Federal §25E single filer cap
+    Math.round(cap * 2 / 500) * 500,
+    100000,
+    150000,                            // Federal §30D single filer cap
+    200000,
+    300000,
+  ];
+  return Array.from(new Set(raw)).sort((a, b) => a - b);
+}
+
 function CalculatorPage() {
-  const [income, setIncome] = useState(70000);
   const [household, setHousehold] = useState(3);
+  const brackets = useMemo(() => incomeBrackets(household), [household]);
+  const [bracketIdx, setBracketIdx] = useState(() => brackets.findIndex((v) => v >= 70000));
+  const income = brackets[Math.min(bracketIdx, brackets.length - 1)] ?? brackets[0];
   const [zip, setZip] = useState("94510");
   const [vType, setVType] = useState<"new" | "used">("used");
   const [homeOwner, setHomeOwner] = useState(true);
   const [tribal, setTribal] = useState(false);
 
-  const amiPct = useMemo(() => {
-    // rough AMI heuristic
-    const ami = 110000 + (household - 1) * 15000;
-    return Math.round((income / ami) * 100);
-  }, [income, household]);
+  const cap = cc4aCap(household);
+  const capPct = Math.round((income / cap) * 100);
+
+  const tier: "lower" | "moderate" | "higher" =
+    income <= cap ? "lower" : income <= cap * 2 ? "moderate" : "higher";
 
   const results = useMemo(() => {
-    // CCFA tiers by % of area median income
+    // Clean Cars 4 All — income-qualified up to the CC4A cap
     let ccfa = 0;
-    if (amiPct <= 80) ccfa = 12000;
-    else if (amiPct <= 150) ccfa = 7500;
-    else if (amiPct <= 225) ccfa = 3000;
+    if (income <= cap * 0.6) ccfa = 12000;
+    else if (income <= cap * 0.85) ccfa = 9500;
+    else if (income <= cap) ccfa = 7500;
 
-    // DCAP tiers
+    // DCAP — grant + subsidized financing, income-qualified
     let dcap = 0;
-    if (amiPct <= 80) dcap = 2000;
-    else if (amiPct <= 150) dcap = 1500;
-    else if (amiPct <= 225) dcap = 500;
+    if (income <= cap) dcap = 5000;
+    else if (income <= cap * 1.25) dcap = 2500;
 
-    // Federal §30D/§25E income caps (single-filer approximation)
+    // Federal §25E (used, $75k single cap) / §30D (new, $150k single cap)
     const fedCap = vType === "used" ? 75000 : 150000;
     const fed = income <= fedCap ? (vType === "used" ? 4000 : 7500) : 0;
 
-    // Utility rebate — CARE/FERA-eligible households get a bigger check
-    const utility = amiPct <= 200 ? (amiPct <= 100 ? 1500 : 1000) : 500;
+    // 2026 First-Time EV Buyer rebate — no income limit
+    const firstTime = vType === "used" ? 1750 : 3500;
 
-    const charger = homeOwner ? (amiPct <= 150 ? 1000 : 500) : 0;
+    // Utility rebate (PG&E/SCE/SDG&E) — income-qualified adds
+    const utility = income <= cap ? 2500 : income <= cap * 1.5 ? 1500 : 500;
+
+    // Home charger rebate — owners only
+    const charger = homeOwner ? (income <= cap * 1.5 ? 1500 : 500) : 0;
     const tribalAdd = tribal ? 1500 : 0;
-    return { ccfa, dcap, fed, utility, charger, tribalAdd };
-  }, [amiPct, income, vType, homeOwner, tribal]);
+    return { ccfa, dcap, fed, firstTime, utility, charger, tribalAdd };
+  }, [income, cap, vType, homeOwner, tribal]);
 
   const total = Object.values(results).reduce((a, b) => a + b, 0);
 
@@ -69,8 +111,9 @@ function CalculatorPage() {
             Your rebate stack, in under a minute.
           </h1>
           <p className="mt-4 max-w-2xl text-ink-soft">
-            California-only. Estimates draw from CCFA, DCAP, federal §30D/§25E, utility
-            rebates, and home-charger programs. Not a formal eligibility determination.
+            California-only. Estimates draw from Clean Cars 4 All, DCAP, federal §25E/§30D,
+            the 2026 first-time EV buyer rebate, utility rebates, and home-charger programs.
+            Not a formal eligibility determination.
           </p>
         </div>
       </section>
@@ -82,24 +125,59 @@ function CalculatorPage() {
             <h2 className="text-xl font-bold text-ink">Tell us about you</h2>
 
             <div className="mt-6 space-y-5">
-              <Field label="Household income (annual)">
+              <Field label={`Household size (CC4A cap: $${cap.toLocaleString()})`}>
+                <input
+                  type="number" min={1} max={12} value={household}
+                  onChange={(e) => {
+                    const hh = Math.max(1, Math.min(12, +e.target.value || 1));
+                    setHousehold(hh);
+                    // clamp bracket index to new brackets length
+                    const nb = incomeBrackets(hh);
+                    setBracketIdx((i) => Math.min(i, nb.length - 1));
+                  }}
+                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5"
+                />
+              </Field>
+
+              <Field label="Household income (snaps to real rebate brackets)">
                 <div className="flex items-center gap-3">
                   <span className="text-ink-soft">$</span>
                   <input
-                    type="range" min={20000} max={250000} step={2500}
-                    value={income} onChange={(e) => setIncome(+e.target.value)}
+                    type="range"
+                    min={0}
+                    max={brackets.length - 1}
+                    step={1}
+                    value={Math.min(bracketIdx, brackets.length - 1)}
+                    onChange={(e) => setBracketIdx(+e.target.value)}
                     className="flex-1 accent-primary"
                   />
-                  <span className="w-24 text-right font-display font-bold text-primary">${income.toLocaleString()}</span>
+                  <span className="w-28 text-right font-display font-bold text-primary">${income.toLocaleString()}</span>
                 </div>
-              </Field>
-
-              <Field label="Household size">
-                <input
-                  type="number" min={1} max={12} value={household}
-                  onChange={(e) => setHousehold(+e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5"
-                />
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {brackets.map((b, i) => (
+                    <button
+                      key={b}
+                      onClick={() => setBracketIdx(i)}
+                      className={`rounded-full px-2 py-1 text-[11px] font-semibold ${
+                        i === bracketIdx
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-ink-soft hover:bg-accent"
+                      }`}
+                    >
+                      ${(b / 1000).toFixed(0)}k
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-2 text-xs text-ink-soft">
+                  {capPct}% of the CC4A income limit for household of {household} —{" "}
+                  <strong className="text-ink">
+                    {tier === "lower"
+                      ? "Lower income: full rebate stack available"
+                      : tier === "moderate"
+                      ? "Moderate income: partial rebates + federal credit"
+                      : "Higher income: statewide + utility rebates only"}
+                  </strong>
+                </div>
               </Field>
 
               <Field label="ZIP code">
@@ -131,12 +209,13 @@ function CalculatorPage() {
           <div className="rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground shadow-lg md:p-8">
             <p className="text-xs font-bold uppercase tracking-widest text-primary-foreground/80">Your estimated stack</p>
             <div className="mt-2 font-display text-5xl font-bold text-sun">${total.toLocaleString()}</div>
-            <div className="mt-1 text-sm text-primary-foreground/85">at approximately {amiPct}% of area median income</div>
+            <div className="mt-1 text-sm text-primary-foreground/85">at ${income.toLocaleString()} · household of {household} · {capPct}% of CC4A limit</div>
 
             <ul className="mt-8 space-y-3 text-sm">
-              <Row k="CCFA rebate" v={results.ccfa} />
+              <Row k="Clean Cars 4 All rebate" v={results.ccfa} />
               <Row k="DCAP grant" v={results.dcap} />
               <Row k={`Federal ${vType === "used" ? "§25E" : "§30D"} credit`} v={results.fed} />
+              <Row k={`First-time EV buyer rebate (2026, ${vType})`} v={results.firstTime} />
               <Row k="Utility rebate (typical)" v={results.utility} />
               <Row k="Home charger rebate" v={results.charger} />
               <Row k="Tribal supplemental" v={results.tribalAdd} />
@@ -151,6 +230,7 @@ function CalculatorPage() {
     </PageShell>
   );
 }
+
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
