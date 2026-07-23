@@ -39,7 +39,7 @@ const steps = [
 const checklist = [
   { t: "Letter of Intent (LOI)", d: "We'll email you the template — about five minutes.", req: true },
   { t: "DCAP or CCFA approval documents", d: "Your voucher number or approval letter.", req: true },
-  { t: "Written agreement to our fee", d: "$1,500 or 5% of the purchase price, whichever is greater.", req: true },
+  { t: "Written agreement to our fee", d: "$1,500 flat, or 5% of vehicle price on cars above $30k (whichever is greater) — applied after your rebate savings.", req: true },
   { t: "The listing link", d: "Facebook Marketplace, Craigslist, OfferUp, or a dealer page.", req: true },
   { t: "Vehicle details", d: "VIN, mileage, asking price, and seller contact.", req: true },
   { t: "Photos from the seller", d: "Helpful but optional — speeds up review.", req: false },
