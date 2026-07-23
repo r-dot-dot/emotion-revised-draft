@@ -34,14 +34,29 @@ function CalculatorPage() {
   }, [income, household]);
 
   const results = useMemo(() => {
-    const ccfa = amiPct <= 300 ? (amiPct <= 225 ? 7500 : 3000) : 0;
-    const dcap = amiPct <= 400 ? 2000 : 0;
-    const fed = vType === "used" ? 4000 : 7500;
-    const utility = 1000;
-    const charger = homeOwner ? 500 : 0;
+    // CCFA tiers by % of area median income
+    let ccfa = 0;
+    if (amiPct <= 80) ccfa = 12000;
+    else if (amiPct <= 150) ccfa = 7500;
+    else if (amiPct <= 225) ccfa = 3000;
+
+    // DCAP tiers
+    let dcap = 0;
+    if (amiPct <= 80) dcap = 2000;
+    else if (amiPct <= 150) dcap = 1500;
+    else if (amiPct <= 225) dcap = 500;
+
+    // Federal §30D/§25E income caps (single-filer approximation)
+    const fedCap = vType === "used" ? 75000 : 150000;
+    const fed = income <= fedCap ? (vType === "used" ? 4000 : 7500) : 0;
+
+    // Utility rebate — CARE/FERA-eligible households get a bigger check
+    const utility = amiPct <= 200 ? (amiPct <= 100 ? 1500 : 1000) : 500;
+
+    const charger = homeOwner ? (amiPct <= 150 ? 1000 : 500) : 0;
     const tribalAdd = tribal ? 1500 : 0;
     return { ccfa, dcap, fed, utility, charger, tribalAdd };
-  }, [amiPct, vType, homeOwner, tribal]);
+  }, [amiPct, income, vType, homeOwner, tribal]);
 
   const total = Object.values(results).reduce((a, b) => a + b, 0);
 
