@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote } from "lucide-react";
+import { useRef } from "react";
+import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
 import heroEv from "@/assets/hero-ev.jpg";
 
