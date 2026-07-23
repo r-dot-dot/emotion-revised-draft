@@ -225,3 +225,113 @@ function PathCard({
     </Link>
   );
 }
+
+const REVIEWS = [
+  { name: "Daniel D.", city: "Mountain View, CA", quote: "This is definitely the place to go for EV rebates that are hard/impossible to find elsewhere. They saved my family an absolutely incredible amount of money on three used Chevy Bolts using rebates from BAAQMD, PG&E, IRS and MCE." },
+  { name: "Rita DeAngelis", city: "Google review", quote: "The most positive, productive and quick experience I've ever had when purchasing a vehicle. Adam and Cole found the perfect vehicle for me, helped with all of the EV incentives and, most important, made me feel valued." },
+  { name: "Matthew Tessema", city: "Google review", quote: "Fast, quick responses, easy, they were patient when I took a while to get my credit union loan, good knowledge on EV vehicles and maximizing all rebate options, fair dealership fees, and the ability to buy via auction." },
+  { name: "Ruff Riffing", city: "Google Local Guide", quote: "It has been such a great experience with emotion autos. Adam has been such great help. Very knowledgeable, professional, super patient and extremely helpful. Let these guys find your car. Best move you can ever make!" },
+  { name: "A Z", city: "Google review", quote: "eMotion Autos is by far the most professional, most honest, most ethical and most trustworthy dealership in the country." },
+  { name: "BH Design", city: "Google review", quote: "The Emotion process was supportive and painless. Unlike anything I've ever experienced when buying a car. Adam was kind, patient, informed, and communicative. Would definitely use them again." },
+  { name: "Noah Warren", city: "Google review", quote: "eMotion Autos was transparent and helpful for the entire process. There is a $500 deposit to start the car search process and then they use your criteria to help locate a car that fits your needs within your budget." },
+  { name: "Jason M.", city: "Hayward, CA", quote: "Great service! I contacted eMotion Autos to help me find used EVs not listed online. Jason and I went over their whole process and he responded quickly, bringing me several car options and all information about them. Very satisfied with their service and transparency." },
+];
+
+function ReviewsCarousel() {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollByCards = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.querySelector<HTMLElement>("[data-review-card]");
+    const gap = 20; // matches gap-5
+    const step = (card?.offsetWidth ?? 320) + gap;
+    const max = track.scrollWidth - track.clientWidth;
+    let next = track.scrollLeft + dir * step;
+    // Loop: past the end -> back to start; before the start -> jump to end.
+    if (dir === 1 && next > max - 4) next = 0;
+    if (dir === -1 && track.scrollLeft <= 4) next = max;
+    track.scrollTo({ left: next, behavior: "smooth" });
+  };
+
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="flex items-end justify-between gap-6">
+          <SectionHead
+            kicker="What drivers say"
+            title="5 stars from California EV buyers."
+            lead="Real customers who kept every dollar the rebate programs owed them."
+          />
+          <div className="hidden shrink-0 gap-2 md:flex">
+            <button
+              onClick={() => scrollByCards(-1)}
+              aria-label="Previous reviews"
+              className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-ink shadow-sm transition hover:bg-accent"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => scrollByCards(1)}
+              aria-label="Next reviews"
+              className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-ink shadow-sm transition hover:bg-accent"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={trackRef}
+          className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {REVIEWS.map((r) => (
+            <figure
+              key={r.name}
+              data-review-card
+              className="flex w-[calc((100%-2.5rem)/3)] min-w-[280px] shrink-0 snap-start flex-col rounded-2xl border border-border bg-card p-6 shadow-sm"
+            >
+              <div className="flex items-center gap-1 text-sun">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-sun" />
+                ))}
+              </div>
+              <Quote className="mt-4 h-6 w-6 text-primary/30" />
+              <blockquote className="mt-2 flex-1 text-sm leading-relaxed text-ink">
+                {r.quote}
+              </blockquote>
+              <figcaption className="mt-5 border-t border-border pt-4">
+                <div className="text-sm font-semibold text-ink">{r.name}</div>
+                <div className="text-xs text-ink-soft">{r.city}</div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div className="mt-4 flex justify-center gap-2 md:hidden">
+          <button
+            onClick={() => scrollByCards(-1)}
+            aria-label="Previous reviews"
+            className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-ink shadow-sm"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => scrollByCards(1)}
+            aria-label="Next reviews"
+            className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-ink shadow-sm"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-widest text-ink-soft">
+          <span>★ 5.0 Google</span>
+          <span>★ 5.0 Yelp</span>
+          <span>CCFA authorized</span>
+          <span>DCAP authorized</span>
+        </div>
+      </div>
+    </section>
+  );
+}
