@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
-import { Zap, Gauge, DollarSign } from "lucide-react";
+import { Zap, Gauge, DollarSign, Info, Receipt } from "lucide-react";
+
 
 export const Route = createFileRoute("/vehicles")({
   head: () => ({
