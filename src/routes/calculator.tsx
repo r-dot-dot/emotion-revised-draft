@@ -139,45 +139,48 @@ function CalculatorPage() {
                 />
               </Field>
 
-              <Field label="Household income (snaps to real rebate brackets)">
-                <div className="flex items-center gap-3">
-                  <span className="text-ink-soft">$</span>
-                  <input
-                    type="range"
-                    min={0}
-                    max={brackets.length - 1}
-                    step={1}
-                    value={Math.min(bracketIdx, brackets.length - 1)}
-                    onChange={(e) => setBracketIdx(+e.target.value)}
-                    className="flex-1 accent-primary"
-                  />
-                  <span className="w-28 text-right font-display font-bold text-primary">${income.toLocaleString()}</span>
-                </div>
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {brackets.map((b, i) => (
-                    <button
-                      key={b}
-                      onClick={() => setBracketIdx(i)}
-                      className={`rounded-full px-2 py-1 text-[11px] font-semibold ${
-                        i === bracketIdx
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-ink-soft hover:bg-accent"
-                      }`}
-                    >
-                      ${(b / 1000).toFixed(0)}k
-                    </button>
-                  ))}
-                </div>
-                <div className="mt-2 text-xs text-ink-soft">
-                  {capPct}% of the CC4A income limit for household of {household} —{" "}
-                  <strong className="text-ink">
-                    {tier === "lower"
-                      ? "Lower income: full rebate stack available"
-                      : tier === "moderate"
-                      ? "Moderate income: partial rebates + federal credit"
-                      : "Higher income: statewide + utility rebates only"}
-                  </strong>
-                </div>
+              <Field label="Household income range">
+                {(() => {
+                  const idx = Math.min(bracketIdx, brackets.length - 1);
+                  const lo = idx === 0 ? 0 : brackets[idx - 1];
+                  const hi = idx === brackets.length - 1 ? null : brackets[idx];
+                  const rangeLabel =
+                    hi === null
+                      ? `Over $${lo.toLocaleString()}`
+                      : `$${lo.toLocaleString()} – $${hi.toLocaleString()}`;
+                  return (
+                    <>
+                      <div className="rounded-xl bg-primary/5 px-4 py-3 text-center">
+                        <div className="font-display text-xl font-bold text-primary">{rangeLabel}</div>
+                        <div className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-ink-soft">
+                          Household of {household}
+                        </div>
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={brackets.length - 1}
+                        step={1}
+                        value={idx}
+                        onChange={(e) => setBracketIdx(+e.target.value)}
+                        className="mt-3 w-full accent-primary"
+                      />
+                      <div className="mt-1 flex justify-between text-[10px] font-semibold uppercase tracking-widest text-ink-soft">
+                        <span>Lowest</span>
+                        <span>Highest</span>
+                      </div>
+                      <div className="mt-2 text-xs text-ink-soft">
+                        <strong className="text-ink">
+                          {tier === "lower"
+                            ? "Lower income: full rebate stack available"
+                            : tier === "moderate"
+                            ? "Moderate income: partial rebates + federal credit"
+                            : "Higher income: statewide + utility rebates only"}
+                        </strong>
+                      </div>
+                    </>
+                  );
+                })()}
               </Field>
 
               <Field label="ZIP code">
