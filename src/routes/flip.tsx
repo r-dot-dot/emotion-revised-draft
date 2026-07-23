@@ -189,9 +189,9 @@ function FlipPage() {
               ))}
 
               <div className="mt-6 rounded-2xl bg-ink p-5 text-background">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Your fee on a $22,000 car</div>
-                <div className="mt-1 font-display text-4xl font-bold">$1,500</div>
-                <div className="text-xs text-primary-foreground/70">Minimum fee. On vehicles above $30,000, the fee is 5% of purchase price.</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Our fee</div>
+                <div className="mt-1 font-display text-3xl font-bold">$1,500 flat</div>
+                <div className="mt-1 text-xs text-primary-foreground/80">On vehicles above $30,000, the fee becomes 5% of the purchase price if that's greater. Charged <strong>after</strong> your rebate savings — never before.</div>
               </div>
             </aside>
           </div>
