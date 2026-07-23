@@ -206,7 +206,7 @@ function FlipPage() {
             {[
               ["Why can't I just buy the car myself?", "You can — but CCFA and DCAP require the vehicle to be purchased through an authorized dealer for the incentive to apply. A private seller can't process that claim."],
               ["What if the car fails inspection?", "We don't buy it, and you owe nothing. That risk is exactly why we inspect before purchase."],
-              ["How much do you charge?", "$1,500 or 5% of the purchase price, whichever is greater. Published so there's no surprise."],
+              ["How much do you charge?", "$1,500 flat on any vehicle under $30,000. Above $30,000, the fee is 5% of the purchase price. Either way, it's calculated after your rebate savings — never before — and it's published so there's no surprise."],
               ["Is a deposit required?", "On higher-priced vehicles, yes — refundable under California law. We tell you the amount up front."],
               ["How long does a flip take?", "About nine days from a complete submission to purchase, then a few more days for paperwork and delivery."],
               ["Can I flip a car from out of state?", "Usually not — incentives require California registration and out-of-state title issues often cost more than the rebate."],
