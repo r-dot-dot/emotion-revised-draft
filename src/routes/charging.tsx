@@ -101,7 +101,7 @@ function ChargingPage() {
         <div className="mx-auto grid max-w-7xl gap-6 px-4 md:grid-cols-2">
           <div className="rounded-3xl border-2 border-primary bg-primary/5 p-8">
             <p className="text-xs font-bold uppercase tracking-widest text-primary">We sell chargers</p>
-            <h3 className="mt-2 text-2xl font-bold text-ink">Level 2 chargers, at cost.</h3>
+            <h3 className="mt-2 text-2xl font-bold text-ink">Home plug installation, at cost.</h3>
             <p className="mt-3 text-sm text-ink-soft">
               We stock ChargePoint, Wallbox, and Emporia units. Rebate-eligible SKUs
               only, priced at our dealer cost so you keep the utility rebate margin.

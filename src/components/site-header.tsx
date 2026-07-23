@@ -10,7 +10,6 @@ const primaryTabs = [
 ] as const;
 
 const moreLinks = [
-  { to: "/vehicles", label: "Vehicles" },
   { to: "/charging", label: "Charging" },
   { to: "/incentives", label: "Incentives" },
   { to: "/service", label: "Service" },

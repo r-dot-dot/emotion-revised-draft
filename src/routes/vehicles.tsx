@@ -169,7 +169,7 @@ const CUSTOMIZATIONS: Customization[] = [
   { id: "interior", label: "Specific interior / trim", fee: 400 },
   { id: "wheels", label: "Upgraded wheels", fee: 350 },
   { id: "tow", label: "Tow package", fee: 600 },
-  { id: "l2", label: "Level 2 home charger install", fee: 1200 },
+  { id: "l2", label: "Home plug installation", fee: 1200 },
   { id: "warranty", label: "Extended warranty", fee: 1500 },
   { id: "detail", label: "Full detail + ceramic coat", fee: 450 },
   { id: "outofstate", label: "Out-of-state sourcing", fee: 750 },

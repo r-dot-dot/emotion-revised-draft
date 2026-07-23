@@ -39,7 +39,7 @@ const steps = [
 const checklist = [
   { t: "Letter of Intent (LOI)", d: "We'll email you the template — about five minutes.", req: true },
   { t: "DCAP or CCFA approval documents", d: "Your voucher number or approval letter.", req: true },
-  { t: "Written agreement to our fee", d: "$1,500 or 5% of the purchase price, whichever is greater.", req: true },
+  { t: "Written agreement to our fee", d: "$1,500 flat, or 5% of vehicle price on cars above $30k (whichever is greater) — applied after your rebate savings.", req: true },
   { t: "The listing link", d: "Facebook Marketplace, Craigslist, OfferUp, or a dealer page.", req: true },
   { t: "Vehicle details", d: "VIN, mileage, asking price, and seller contact.", req: true },
   { t: "Photos from the seller", d: "Helpful but optional — speeds up review.", req: false },
@@ -189,9 +189,9 @@ function FlipPage() {
               ))}
 
               <div className="mt-6 rounded-2xl bg-ink p-5 text-background">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Your fee on a $22,000 car</div>
-                <div className="mt-1 font-display text-4xl font-bold">$1,500</div>
-                <div className="text-xs text-primary-foreground/70">Minimum fee. On vehicles above $30,000, the fee is 5% of purchase price.</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Our fee</div>
+                <div className="mt-1 font-display text-3xl font-bold">$1,500 flat</div>
+                <div className="mt-1 text-xs text-primary-foreground/80">On vehicles above $30,000, the fee becomes 5% of the purchase price if that's greater. Charged <strong>after</strong> your rebate savings — never before.</div>
               </div>
             </aside>
           </div>
@@ -206,7 +206,7 @@ function FlipPage() {
             {[
               ["Why can't I just buy the car myself?", "You can — but CCFA and DCAP require the vehicle to be purchased through an authorized dealer for the incentive to apply. A private seller can't process that claim."],
               ["What if the car fails inspection?", "We don't buy it, and you owe nothing. That risk is exactly why we inspect before purchase."],
-              ["How much do you charge?", "$1,500 or 5% of the purchase price, whichever is greater. Published so there's no surprise."],
+              ["How much do you charge?", "$1,500 flat on any vehicle under $30,000. Above $30,000, the fee is 5% of the purchase price. Either way, it's calculated after your rebate savings — never before — and it's published so there's no surprise."],
               ["Is a deposit required?", "On higher-priced vehicles, yes — refundable under California law. We tell you the amount up front."],
               ["How long does a flip take?", "About nine days from a complete submission to purchase, then a few more days for paperwork and delivery."],
               ["Can I flip a car from out of state?", "Usually not — incentives require California registration and out-of-state title issues often cost more than the rebate."],
