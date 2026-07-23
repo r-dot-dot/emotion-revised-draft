@@ -124,7 +124,7 @@ function Home() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {[
               { icon: Car, t: "Authorized dealership", d: "Licensed to process CCFA and DCAP claims on your behalf." },
-              { icon: Calculator, t: "Transparent fees", d: "$1,500 or 5% of price — whichever is greater. Published, not negotiated." },
+              { icon: Calculator, t: "Transparent fees", d: "$1,500 flat under $30k. 5% of price above $30k. Charged after your savings — published, not negotiated." },
               { icon: SearchIcon, t: "We do the legwork", d: "Verification, inspection, DMV, and rebate filings — one point of contact." },
             ].map((x) => (
               <div key={x.t} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
