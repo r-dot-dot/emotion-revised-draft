@@ -9,8 +9,62 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VehiclesRouteImport } from './routes/vehicles'
+import { Route as ServiceRouteImport } from './routes/service'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as IncentivesRouteImport } from './routes/incentives'
+import { Route as GetStartedRouteImport } from './routes/get-started'
+import { Route as FlipRouteImport } from './routes/flip'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ChargingRouteImport } from './routes/charging'
+import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VehiclesRoute = VehiclesRouteImport.update({
+  id: '/vehicles',
+  path: '/vehicles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiceRoute = ServiceRouteImport.update({
+  id: '/service',
+  path: '/service',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IncentivesRoute = IncentivesRouteImport.update({
+  id: '/incentives',
+  path: '/incentives',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetStartedRoute = GetStartedRouteImport.update({
+  id: '/get-started',
+  path: '/get-started',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlipRoute = FlipRouteImport.update({
+  id: '/flip',
+  path: '/flip',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChargingRoute = ChargingRouteImport.update({
+  id: '/charging',
+  path: '/charging',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +73,158 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calculator': typeof CalculatorRoute
+  '/charging': typeof ChargingRoute
+  '/faq': typeof FaqRoute
+  '/flip': typeof FlipRoute
+  '/get-started': typeof GetStartedRoute
+  '/incentives': typeof IncentivesRoute
+  '/search': typeof SearchRoute
+  '/service': typeof ServiceRoute
+  '/vehicles': typeof VehiclesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calculator': typeof CalculatorRoute
+  '/charging': typeof ChargingRoute
+  '/faq': typeof FaqRoute
+  '/flip': typeof FlipRoute
+  '/get-started': typeof GetStartedRoute
+  '/incentives': typeof IncentivesRoute
+  '/search': typeof SearchRoute
+  '/service': typeof ServiceRoute
+  '/vehicles': typeof VehiclesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calculator': typeof CalculatorRoute
+  '/charging': typeof ChargingRoute
+  '/faq': typeof FaqRoute
+  '/flip': typeof FlipRoute
+  '/get-started': typeof GetStartedRoute
+  '/incentives': typeof IncentivesRoute
+  '/search': typeof SearchRoute
+  '/service': typeof ServiceRoute
+  '/vehicles': typeof VehiclesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/calculator'
+    | '/charging'
+    | '/faq'
+    | '/flip'
+    | '/get-started'
+    | '/incentives'
+    | '/search'
+    | '/service'
+    | '/vehicles'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/calculator'
+    | '/charging'
+    | '/faq'
+    | '/flip'
+    | '/get-started'
+    | '/incentives'
+    | '/search'
+    | '/service'
+    | '/vehicles'
+  id:
+    | '__root__'
+    | '/'
+    | '/calculator'
+    | '/charging'
+    | '/faq'
+    | '/flip'
+    | '/get-started'
+    | '/incentives'
+    | '/search'
+    | '/service'
+    | '/vehicles'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalculatorRoute: typeof CalculatorRoute
+  ChargingRoute: typeof ChargingRoute
+  FaqRoute: typeof FaqRoute
+  FlipRoute: typeof FlipRoute
+  GetStartedRoute: typeof GetStartedRoute
+  IncentivesRoute: typeof IncentivesRoute
+  SearchRoute: typeof SearchRoute
+  ServiceRoute: typeof ServiceRoute
+  VehiclesRoute: typeof VehiclesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/vehicles': {
+      id: '/vehicles'
+      path: '/vehicles'
+      fullPath: '/vehicles'
+      preLoaderRoute: typeof VehiclesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/service': {
+      id: '/service'
+      path: '/service'
+      fullPath: '/service'
+      preLoaderRoute: typeof ServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/incentives': {
+      id: '/incentives'
+      path: '/incentives'
+      fullPath: '/incentives'
+      preLoaderRoute: typeof IncentivesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-started': {
+      id: '/get-started'
+      path: '/get-started'
+      fullPath: '/get-started'
+      preLoaderRoute: typeof GetStartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flip': {
+      id: '/flip'
+      path: '/flip'
+      fullPath: '/flip'
+      preLoaderRoute: typeof FlipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/charging': {
+      id: '/charging'
+      path: '/charging'
+      fullPath: '/charging'
+      preLoaderRoute: typeof ChargingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +237,26 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalculatorRoute: CalculatorRoute,
+  ChargingRoute: ChargingRoute,
+  FaqRoute: FaqRoute,
+  FlipRoute: FlipRoute,
+  GetStartedRoute: GetStartedRoute,
+  IncentivesRoute: IncentivesRoute,
+  SearchRoute: SearchRoute,
+  ServiceRoute: ServiceRoute,
+  VehiclesRoute: VehiclesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
