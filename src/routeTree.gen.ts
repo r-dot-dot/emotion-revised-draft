@@ -14,6 +14,7 @@ import { Route as ServiceRouteImport } from './routes/service'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as IncentivesRouteImport } from './routes/incentives'
 import { Route as GetStartedRouteImport } from './routes/get-started'
+import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FlipRouteImport } from './routes/flip'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ChargingRouteImport } from './routes/charging'
@@ -43,6 +44,11 @@ const IncentivesRoute = IncentivesRouteImport.update({
 const GetStartedRoute = GetStartedRouteImport.update({
   id: '/get-started',
   path: '/get-started',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FlipRoute = FlipRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/charging': typeof ChargingRoute
   '/faq': typeof FaqRoute
   '/flip': typeof FlipRoute
+  '/gallery': typeof GalleryRoute
   '/get-started': typeof GetStartedRoute
   '/incentives': typeof IncentivesRoute
   '/search': typeof SearchRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/charging': typeof ChargingRoute
   '/faq': typeof FaqRoute
   '/flip': typeof FlipRoute
+  '/gallery': typeof GalleryRoute
   '/get-started': typeof GetStartedRoute
   '/incentives': typeof IncentivesRoute
   '/search': typeof SearchRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/charging': typeof ChargingRoute
   '/faq': typeof FaqRoute
   '/flip': typeof FlipRoute
+  '/gallery': typeof GalleryRoute
   '/get-started': typeof GetStartedRoute
   '/incentives': typeof IncentivesRoute
   '/search': typeof SearchRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/charging'
     | '/faq'
     | '/flip'
+    | '/gallery'
     | '/get-started'
     | '/incentives'
     | '/search'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/charging'
     | '/faq'
     | '/flip'
+    | '/gallery'
     | '/get-started'
     | '/incentives'
     | '/search'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/charging'
     | '/faq'
     | '/flip'
+    | '/gallery'
     | '/get-started'
     | '/incentives'
     | '/search'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   ChargingRoute: typeof ChargingRoute
   FaqRoute: typeof FaqRoute
   FlipRoute: typeof FlipRoute
+  GalleryRoute: typeof GalleryRoute
   GetStartedRoute: typeof GetStartedRoute
   IncentivesRoute: typeof IncentivesRoute
   SearchRoute: typeof SearchRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/get-started'
       fullPath: '/get-started'
       preLoaderRoute: typeof GetStartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/flip': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChargingRoute: ChargingRoute,
   FaqRoute: FaqRoute,
   FlipRoute: FlipRoute,
+  GalleryRoute: GalleryRoute,
   GetStartedRoute: GetStartedRoute,
   IncentivesRoute: IncentivesRoute,
   SearchRoute: SearchRoute,

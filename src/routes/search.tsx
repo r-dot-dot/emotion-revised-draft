@@ -8,7 +8,8 @@ import {
   Handshake,
   ListChecks,
   UserCheck,
-  Zap,
+  Lock,
+  Receipt,
 } from "lucide-react";
 import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
 
@@ -19,10 +20,10 @@ export const Route = createFileRoute("/search")({
       {
         name: "description",
         content:
-          "Submit a rough brief, join our search waitlist, and we hand you an approved shortlist of rebate-eligible California EVs. Browse the models we track most.",
+          "Submit a rough brief, join our search waitlist, and we hand you an approved shortlist of rebate-eligible California EVs.",
       },
       { property: "og:title", content: "Search — Join the waitlist. We find your EV." },
-      { property: "og:description", content: "Waitlist → approval → your EV. Browse the models we track." },
+      { property: "og:description", content: "Waitlist → approval → your EV." },
     ],
   }),
   component: SearchPage,
@@ -31,49 +32,11 @@ export const Route = createFileRoute("/search")({
 const bodyTypes = ["Sedan", "SUV", "Hatchback", "Truck", "Van"] as const;
 const brandOptions = ["Any", "Tesla", "Chevrolet", "Ford", "Hyundai", "Kia", "Nissan", "Toyota", "Volkswagen"] as const;
 
-type GalleryCar = {
-  name: string;
-  years: string;
-  style: string;
-  range: string;
-  mpg?: string;
-  blurb: string;
-  price: string;
-  minPrice: number;
-  maxPrice: number;
-  category: "BEV" | "PHEV" | "Truck/Van";
-};
-
-const gallery: GalleryCar[] = [
-  // BEVs
-  { name: "Chevrolet Bolt EV", years: "2018–2023", style: "Hatchback", range: "240–270 mi", blurb: "Great for running errands and occasional road trips.", price: "$16,000–$23,000", minPrice: 16000, maxPrice: 23000, category: "BEV" },
-  { name: "Chevrolet Bolt EUV", years: "2022–2023", style: "Subcompact SUV", range: "240–250 mi", blurb: "A bigger Bolt with a more upright SUV-like driving position.", price: "$23,000–$28,000", minPrice: 23000, maxPrice: 28000, category: "BEV" },
-  { name: "Kia Niro EV", years: "2018–2023", style: "Subcompact SUV", range: "230–240 mi", blurb: "Subcompact with surprising room and flexibility — Kona's cousin.", price: "$20,000–$32,000", minPrice: 20000, maxPrice: 32000, category: "BEV" },
-  { name: "Tesla Model 3", years: "2018–2023", style: "Sedan", range: "200–300+ mi", blurb: "The original Tesla for the people.", price: "$23,000–$33,000", minPrice: 23000, maxPrice: 33000, category: "BEV" },
-  { name: "Tesla Model Y", years: "2020–2023", style: "SUV", range: "200–300+ mi", blurb: "The world's best-selling EV for a reason.", price: "$27,000–$41,000", minPrice: 27000, maxPrice: 41000, category: "BEV" },
-  { name: "Kia EV6", years: "2022–2023", style: "Wagon-like compact SUV", range: "250–300+ mi", blurb: "Fun to drive, long-range and practical.", price: "$27,000–$42,000", minPrice: 27000, maxPrice: 42000, category: "BEV" },
-  // PHEVs
-  { name: "Toyota Prius Prime", years: "2018–2023", style: "Hatchback", range: "EV 25–30 mi", mpg: "48 mpg", blurb: "A great car that's ready for all your adventures.", price: "$23,000–$37,000", minPrice: 23000, maxPrice: 37000, category: "PHEV" },
-  { name: "Toyota RAV-4 Prime", years: "2022–2023", style: "Compact SUV", range: "EV 40 mi", mpg: "38 mpg", blurb: "Prius-like efficiency in an SUV package.", price: "$32,000–$49,000", minPrice: 32000, maxPrice: 49000, category: "PHEV" },
-  { name: "Kia Niro PHEV", years: "2019–2023", style: "Compact SUV", range: "EV 25 mi", mpg: "37 mpg", blurb: "A great alternative to a Toyota PHEV.", price: "$21,000–$33,000", minPrice: 21000, maxPrice: 33000, category: "PHEV" },
-  { name: "Honda Clarity", years: "2018–2021", style: "Sedan", range: "EV 47 mi", mpg: "42 mpg", blurb: "Legendary Honda efficiency in a futuristic package.", price: "$21,000–$30,000", minPrice: 21000, maxPrice: 30000, category: "PHEV" },
-  { name: "Mitsubishi Outlander PHEV", years: "2022–2023", style: "5–7 seater SUV", range: "EV 24 mi", mpg: "60+ combined", blurb: "A three-row budget-friendly plug-in SUV.", price: "$25,000–$33,000", minPrice: 25000, maxPrice: 33000, category: "PHEV" },
-  { name: "Hyundai Ioniq PHEV", years: "2018–2022", style: "Hatchback", range: "EV 29 mi", mpg: "52 combined", blurb: "Inexpensive, flexible, versatile, reliable.", price: "$20,000–$27,000", minPrice: 20000, maxPrice: 27000, category: "PHEV" },
-  // Trucks & Vans
-  { name: "Ford F-150 Lightning", years: "2022–2023", style: "Pickup Truck", range: "240–275 mi", blurb: "Great for those who need a work truck.", price: "$35,000–$65,000", minPrice: 35000, maxPrice: 65000, category: "Truck/Van" },
-  { name: "Rivian R1T", years: "2022–2023", style: "Pickup Truck", range: "225–300+ mi", blurb: "Great for those who want a truck for adventures.", price: "$50,000–$90,000", minPrice: 50000, maxPrice: 90000, category: "Truck/Van" },
-  { name: "Chrysler Pacifica PHEV", years: "2018–2023", style: "Minivan", range: "EV 25 mi", mpg: "30 mpg", blurb: "A van for around town and road trips with the family.", price: "$23,000–$40,000", minPrice: 23000, maxPrice: 40000, category: "Truck/Van" },
-];
-
 function SearchPage() {
   const [body, setBody] = useState<(typeof bodyTypes)[number]>("SUV");
   const [brand, setBrand] = useState<(typeof brandOptions)[number]>("Any");
   const [budget, setBudget] = useState(25000);
   const [rangeMin, setRangeMin] = useState(150);
-
-  const bevs = useMemo(() => gallery.filter((g) => g.category === "BEV"), []);
-  const phevs = useMemo(() => gallery.filter((g) => g.category === "PHEV"), []);
-  const trucks = useMemo(() => gallery.filter((g) => g.category === "Truck/Van"), []);
 
   return (
     <PageShell>
@@ -87,7 +50,7 @@ function SearchPage() {
           <p className="mt-5 max-w-2xl text-lg text-ink-soft">
             Submit a rough brief — it's like joining our search waitlist. We review it,
             approve you into an active search, and then hunt down rebate-eligible California
-            EVs that match. Browse the models we track most below to shape your brief.
+            EVs that match.
           </p>
 
           {/* Waitlist flow strip */}
@@ -225,57 +188,142 @@ function SearchPage() {
         </div>
       </section>
 
-      {/* Vehicle gallery — merged from Vehicles */}
-      <section id="gallery" className="border-t border-border bg-muted/40 py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHead
-            kicker="Vehicle gallery"
-            title="The EVs we know inside and out."
-            lead="Use these as reference for your brief. Prices are typical recent California transactions before rebates."
-          />
-
-          <GallerySection title="Popular BEVs" cars={bevs} />
-          <GallerySection title="Popular PHEVs" cars={phevs} />
-          <GallerySection title="Electric Trucks & Vans" cars={trucks} />
-        </div>
-      </section>
+      {/* Approval-gated price estimate calculator */}
+      <PriceEstimateCalculator budget={budget} />
     </PageShell>
   );
 }
 
-function GallerySection({ title, cars }: { title: string; cars: GalleryCar[] }) {
+type Customization = { id: string; label: string; fee: number };
+
+const CUSTOMIZATIONS: Customization[] = [
+  { id: "color", label: "Specific paint color", fee: 500 },
+  { id: "interior", label: "Specific interior / trim", fee: 400 },
+  { id: "wheels", label: "Upgraded wheels", fee: 350 },
+  { id: "tow", label: "Tow package", fee: 600 },
+  { id: "l2", label: "Home plug installation", fee: 1200 },
+  { id: "warranty", label: "Extended warranty", fee: 1500 },
+  { id: "detail", label: "Full detail + ceramic coat", fee: 450 },
+  { id: "outofstate", label: "Out-of-state sourcing", fee: 750 },
+];
+
+function PriceEstimateCalculator({ budget }: { budget: number }) {
+  const [picked, setPicked] = useState<Record<string, boolean>>({});
+
+  const selected = useMemo(() => CUSTOMIZATIONS.filter((c) => picked[c.id]), [picked]);
+  const customTotal = selected.reduce((a, c) => a + c.fee, 0);
+  // Mock rebate savings (rough placeholder — real number lives on /calculator)
+  const mockSavings = 9500;
+  const estimate = budget + customTotal - mockSavings;
+
   return (
-    <div className="mt-14 first:mt-10">
-      <h3 className="font-display text-2xl font-bold text-ink md:text-3xl">{title}</h3>
-      <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-card">
-        {cars.map((c) => (
-          <article key={c.name} className="grid gap-4 p-5 md:grid-cols-[1fr_1.4fr_auto] md:items-center md:gap-6 md:p-6">
-            <div className="grid h-32 place-items-center rounded-xl bg-gradient-to-br from-primary/15 via-primary/5 to-sun-soft text-primary md:h-28">
-              <Zap className="h-10 w-10 opacity-70" />
+    <section className="border-t border-border bg-muted/40 py-16">
+      <div className="mx-auto max-w-7xl px-4">
+        <SectionHead
+          kicker="Preview — unlocks after approval"
+          title="Estimate your price with customizations."
+          lead="Once your brief is approved, this calculator becomes your working receipt. Check the extras you're considering — we'll show a rough estimate of your out-the-door price with rebate savings applied."
+        />
+
+        <div className="mt-6 flex items-start gap-3 rounded-2xl border border-sun/40 bg-sun-soft p-4 text-sm text-ink">
+          <Lock className="mt-0.5 h-5 w-5 flex-none text-sun-foreground" />
+          <div>
+            <strong>Preview mode.</strong> Numbers below are illustrative. After we approve
+            your search brief, this tool locks in your actual vehicle budget, verified
+            rebate stack, and real customization fees.
+          </div>
+        </div>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1fr]">
+          {/* Checkboxes */}
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
+            <h3 className="text-lg font-bold text-ink">Customizations</h3>
+            <p className="mt-1 text-sm text-ink-soft">
+              Check each extra you'd want in your brief. Each one adds a fee.
+            </p>
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              {CUSTOMIZATIONS.map((c) => {
+                const on = !!picked[c.id];
+                return (
+                  <label
+                    key={c.id}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3 py-2.5 text-sm transition ${
+                      on
+                        ? "border-primary bg-primary/10 text-ink"
+                        : "border-border bg-background text-ink-soft hover:border-ink/30"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={on}
+                      onChange={() => setPicked((p) => ({ ...p, [c.id]: !on }))}
+                      className="mt-0.5 h-4 w-4 accent-primary"
+                    />
+                    <span className="flex flex-1 items-center justify-between gap-2">
+                      <span className="font-semibold">{c.label}</span>
+                      <span className={`text-xs font-bold ${on ? "text-primary" : "text-ink-soft"}`}>
+                        +${c.fee.toLocaleString()}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
             </div>
-            <div className="min-w-0">
-              <h4 className="text-lg font-bold text-ink underline decoration-ink/30 underline-offset-4">
-                {c.name}
-              </h4>
-              <ul className="mt-2 space-y-1 text-sm text-ink-soft">
-                <li>Years: {c.years}</li>
-                <li>Style: {c.style}</li>
-                <li>Range: {c.range}{c.mpg ? ` · ${c.mpg}` : ""}</li>
-                <li>{c.blurb}</li>
+          </div>
+
+          {/* Estimate readout */}
+          <div className="rounded-3xl bg-background p-1 shadow-lg">
+            <div className="rounded-[calc(1.5rem-4px)] border border-dashed border-ink/20 bg-card p-6 font-mono text-sm text-ink md:p-8">
+              <div className="flex items-center gap-2 text-ink-soft">
+                <Receipt className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-widest">Preview estimate</span>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between border-b border-dashed border-ink/20 pb-2">
+                <span>Car budget (from brief)</span>
+                <span className="font-semibold">${budget.toLocaleString()}</span>
+              </div>
+
+              <div className="mt-3 text-xs font-bold uppercase tracking-widest text-ink-soft">
+                Customization fees
+              </div>
+              <ul className="mt-2 space-y-1.5">
+                {selected.length === 0 && (
+                  <li className="text-xs italic text-ink-soft">— none selected —</li>
+                )}
+                {selected.map((c) => (
+                  <li key={c.id} className="flex items-center justify-between">
+                    <span>+ {c.label}</span>
+                    <span>${c.fee.toLocaleString()}</span>
+                  </li>
+                ))}
               </ul>
+              <div className="mt-2 flex items-center justify-between border-b border-dashed border-ink/20 pb-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-ink-soft">Customizations subtotal</span>
+                <span className="font-semibold">+ ${customTotal.toLocaleString()}</span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between border-b border-dashed border-ink/20 pb-2 text-primary">
+                <span>− Estimated rebate savings</span>
+                <span className="font-semibold">− ${mockSavings.toLocaleString()}</span>
+              </div>
+
+              <div className="mt-5 flex items-end justify-between rounded-xl bg-ink px-4 py-4 text-background">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-background/70">Rough estimate</div>
+                  <div className="text-[10px] text-background/60">unlocks fully after brief approval</div>
+                </div>
+                <div className="font-display text-3xl font-bold text-sun">
+                  ${estimate.toLocaleString()}
+                </div>
+              </div>
+              <p className="mt-4 text-[11px] text-ink-soft">
+                Preview only. Real numbers activate once your brief is approved.
+              </p>
             </div>
-            <div className="flex flex-col items-start gap-3 md:items-end">
-              <div className="font-display text-lg font-bold text-ink">{c.price}</div>
-              <Link
-                to="/get-started"
-                className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-background hover:brightness-110"
-              >
-                Get your deal <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </article>
-        ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

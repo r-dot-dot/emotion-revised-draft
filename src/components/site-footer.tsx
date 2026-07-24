@@ -46,6 +46,7 @@ export function SiteFooter() {
             <Link to="/calculator" className="hover:text-ink">Calculator</Link>
             <Link to="/charging" className="hover:text-ink">Charging</Link>
             <Link to="/incentives" className="hover:text-ink">Incentives</Link>
+            <Link to="/gallery" className="hover:text-ink">Vehicle gallery</Link>
             <Link to="/service" className="hover:text-ink">Service</Link>
             <Link to="/faq" className="hover:text-ink">FAQ</Link>
           </nav>
