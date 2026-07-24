@@ -260,8 +260,8 @@ function ReviewsCarousel() {
         <div className="flex items-end justify-between gap-6">
           <SectionHead
             kicker="What drivers say"
-            title="5 stars from California EV buyers."
-            lead="Real customers who kept every dollar the rebate programs owed them."
+            title="100% satisfaction rate."
+            lead="Read what real customers have to say."
           />
           <div className="hidden shrink-0 gap-2 md:flex">
             <button
