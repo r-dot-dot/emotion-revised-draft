@@ -12,6 +12,7 @@ const primaryTabs = [
 const moreLinks = [
   { to: "/charging", label: "Charging" },
   { to: "/incentives", label: "Incentives" },
+  { to: "/gallery", label: "Vehicle gallery" },
   { to: "/service", label: "Service" },
   { to: "/faq", label: "FAQ" },
 ] as const;
