@@ -1,6 +1,48 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, Languages } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Logo } from "./logo";
+
+function setTranslateCookie(lang: "en" | "es") {
+  const value = `/en/${lang}`;
+  const host = window.location.hostname;
+  // Set on current host and parent domain to cover google's cookie lookups
+  document.cookie = `googtrans=${value};path=/`;
+  document.cookie = `googtrans=${value};path=/;domain=${host}`;
+  const parent = host.split(".").slice(-2).join(".");
+  if (parent && parent !== host) {
+    document.cookie = `googtrans=${value};path=/;domain=.${parent}`;
+  }
+}
+
+function readTranslateCookie(): "en" | "es" {
+  if (typeof document === "undefined") return "en";
+  const m = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/(en|es)/);
+  return (m?.[1] as "en" | "es") ?? "en";
+}
+
+function LanguageToggle() {
+  const [lang, setLang] = useState<"en" | "es">("en");
+  useEffect(() => setLang(readTranslateCookie()), []);
+  const toggle = () => {
+    const next = lang === "es" ? "en" : "es";
+    setTranslateCookie(next);
+    setLang(next);
+    window.location.reload();
+  };
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-ink-soft transition hover:text-ink hover:border-primary/40"
+      aria-label={lang === "es" ? "Switch to English" : "Cambiar a español"}
+    >
+      <Languages className="h-3.5 w-3.5 text-primary" />
+      {lang === "es" ? "View in English" : "Se habla español"}
+    </button>
+  );
+}
+
 
 export function SiteFooter() {
   return (
