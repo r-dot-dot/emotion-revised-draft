@@ -127,8 +127,29 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (document.getElementById("google-translate-script")) return;
+    (window as any).googleTranslateElementInit = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const g = (window as any).google;
+      if (g?.translate?.TranslateElement) {
+        new g.translate.TranslateElement(
+          { pageLanguage: "en", includedLanguages: "en,es", autoDisplay: false },
+          "google_translate_element",
+        );
+      }
+    };
+    const s = document.createElement("script");
+    s.id = "google-translate-script";
+    s.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    s.async = true;
+    document.body.appendChild(s);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
+      <div id="google_translate_element" style={{ display: "none" }} />
       <Outlet />
     </QueryClientProvider>
   );
