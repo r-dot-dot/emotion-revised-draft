@@ -95,7 +95,7 @@ export function SiteFooter() {
         </div>
         <div className="mt-4 flex flex-col justify-between gap-2 text-xs text-ink-soft md:flex-row">
           <span>© {new Date().getFullYear()} eMotion Autos · Authorized CCFA &amp; DCAP dealer</span>
-          <span>Se habla español</span>
+          <LanguageToggle />
         </div>
       </div>
     </footer>
