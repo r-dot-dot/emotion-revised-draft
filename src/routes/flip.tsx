@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
 import { Check, Upload, ArrowRight } from "lucide-react";
 import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { FlipSubmission } from "@/components/flip-submission";
 import {
   Accordion,
   AccordionContent,
