@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
 import { Check, Upload, ArrowRight } from "lucide-react";
 import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { FlipSubmission } from "@/components/flip-submission";
 import {
   Accordion,
   AccordionContent,
@@ -36,23 +36,8 @@ const steps = [
   { t: "We file everything", d: "DMV paperwork and all incentive claims, handled." },
 ];
 
-const checklist = [
-  { t: "Letter of Intent (LOI)", d: "We'll email you the template — about five minutes.", req: true },
-  { t: "DCAP or CCFA approval documents", d: "Your voucher number or approval letter.", req: true },
-  { t: "Written agreement to our fee", d: "$1,500 flat, or 5% of vehicle price on cars above $30k (whichever is greater) — applied after your rebate savings.", req: true },
-  { t: "The listing link", d: "Facebook Marketplace, Craigslist, OfferUp, or a dealer page.", req: true },
-  { t: "Vehicle details", d: "VIN, mileage, asking price, and seller contact.", req: true },
-  { t: "Photos from the seller", d: "Helpful but optional — speeds up review.", req: false },
-];
-
 function FlipPage() {
-  const [done, setDone] = useState<Record<number, boolean>>({});
-  const total = checklist.length;
-  const doneCount = Object.values(done).filter(Boolean).length;
-  const reqCount = checklist.filter((c) => c.req).length;
-  const reqDone = checklist.filter((c, i) => c.req && done[i]).length;
-  const ready = reqDone === reqCount;
-  const pct = useMemo(() => Math.round((doneCount / total) * 100), [doneCount, total]);
+
 
   return (
     <PageShell>
@@ -122,71 +107,28 @@ function FlipPage() {
       {/* CHECKLIST */}
       <section id="checklist" className="bg-muted/40 py-20">
         <div className="mx-auto max-w-7xl px-4">
-          <SectionHead kicker="Before you submit" title="What we need from you" lead="Tick items as you gather them — missing items are the main reason a submission stalls." />
+          <SectionHead kicker="Before you submit" title="What we need from you" lead="Paste the links and upload the documents — each checkbox stays locked until its item is actually provided." />
 
           <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-            <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
-              <h3 className="text-xl font-bold text-ink">Your submission checklist</h3>
-              <p className="mt-1 text-sm text-ink-soft">Click each item as you gather it. Nothing is saved until you submit.</p>
-
-              <ul className="mt-6 divide-y divide-border">
-                {checklist.map((c, i) => (
-                  <li
-                    key={c.t}
-                    onClick={() => setDone((d) => ({ ...d, [i]: !d[i] }))}
-                    className="flex cursor-pointer items-start gap-4 py-4"
-                  >
-                    <span
-                      className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md border-2 transition ${
-                        done[i]
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border bg-background"
-                      }`}
-                    >
-                      {done[i] && <Check className="h-4 w-4" />}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className={`text-sm font-bold ${done[i] ? "text-ink-soft line-through" : "text-ink"}`}>{c.t}</div>
-                      <div className="text-xs text-ink-soft">{c.d}</div>
-                    </div>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-widest ${c.req ? "bg-sun-soft text-sun-foreground" : "bg-primary/10 text-primary"}`}>
-                      {c.req ? "REQUIRED" : "OPTIONAL"}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 flex items-center gap-4 rounded-xl border border-border bg-background p-4">
-                <div className="flex-1">
-                  <div className="font-display font-bold text-ink">{doneCount} of {total} complete</div>
-                  <div className="text-xs text-ink-soft">{ready ? "All required items ready — you can submit" : `${reqCount - reqDone} required item(s) left`}</div>
-                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
-                    <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
-                  </div>
-                </div>
-                <button
-                  disabled={!ready}
-                  className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Submit flip
-                </button>
-              </div>
-            </div>
+            <FlipSubmission />
 
             <aside className="rounded-2xl border border-border bg-card p-6 md:p-8">
-              <h4 className="text-lg font-bold text-ink">Upload documents</h4>
-              <p className="mt-1 text-xs text-ink-soft">PDF, JPG, or PNG. We confirm receipt within one business day.</p>
-
-              {[
-                ["Drop your LOI here", "or click to browse"],
-                ["Drop your approval letter", "CCFA voucher or DCAP approval"],
-              ].map(([t, s]) => (
-                <div key={t} className="mt-3 cursor-pointer rounded-xl border-2 border-dashed border-border p-6 text-center transition hover:border-primary hover:bg-primary/5">
-                  <Upload className="mx-auto h-6 w-6 text-primary" />
-                  <div className="mt-2 text-sm font-bold text-ink">{t}</div>
-                  <div className="text-xs text-ink-soft">{s}</div>
-                </div>
-              ))}
+              <h4 className="text-lg font-bold text-ink">How submission works</h4>
+              <ul className="mt-3 space-y-3 text-sm text-ink-soft">
+                <li className="flex gap-2">
+                  <Upload className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  Documents accept PDF, JPG, or PNG. Photos can be uploaded in bulk.
+                </li>
+                <li className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  A checkbox only unlocks after the link is pasted or the file is attached.
+                </li>
+                <li className="flex gap-2">
+                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  Submit becomes available once every required item is checked. We confirm
+                  receipt within one business day.
+                </li>
+              </ul>
 
               <div className="mt-6 rounded-2xl bg-ink p-5 text-background">
                 <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Our fee</div>
@@ -197,6 +139,7 @@ function FlipPage() {
           </div>
         </div>
       </section>
+
 
       {/* FAQ */}
       <section id="faq" className="py-20">
