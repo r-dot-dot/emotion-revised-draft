@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/incentives")({
   head: () => ({
     meta: [
       { title: "Incentives — CCFA, DCAP, federal & utility rebates | eMotion Autos" },
-      { name: "description", content: "Every California EV rebate program, explained. CCFA, DCAP, federal §25E/§30D, utility programs — click to expand." },
+      { name: "description", content: "Every California EV rebate program, explained. CCFA, DCAP, federal 25E/30D, utility programs — click to expand." },
       { property: "og:title", content: "Every California EV rebate, explained" },
       { property: "og:description", content: "CCFA, DCAP, federal, utility — all in one place." },
     ],
@@ -48,7 +48,7 @@ const programs: { q: string; a: React.ReactNode }[] = [
     ),
   },
   {
-    q: "Federal §25E — Used clean vehicle credit",
+    q: "Federal 25E — Used clean vehicle credit",
     a: (
       <>
         <p><strong>Up to $4,000</strong> or 30% of the sale price, whichever is less. Applied at the point of sale by the dealer.</p>
@@ -61,7 +61,7 @@ const programs: { q: string; a: React.ReactNode }[] = [
     ),
   },
   {
-    q: "Federal §30D — New clean vehicle credit",
+    q: "Federal 30D — New clean vehicle credit",
     a: (
       <>
         <p><strong>Up to $7,500</strong> on new EVs meeting battery-sourcing rules. Applied at the point of sale.</p>
@@ -103,7 +103,6 @@ function IncentivesPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Incentives</Eyebrow>
           <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             Every California EV rebate, in one place.
           </h1>

@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Check, Upload, Link2, FileText, Image as ImageIcon, X, Lock } from "lucide-react";
 
-type ItemKind = "link" | "text" | "file" | "photos";
+type ItemKind = "link" | "text" | "details" | "file" | "photos";
 
 type Item = {
   id: string;
@@ -40,11 +40,11 @@ const ITEMS: Item[] = [
   },
   {
     id: "details",
-    title: "Vehicle details",
-    hint: "VIN, mileage, asking price, and seller contact — all in one box.",
+    title: "Vehicle details & asking price",
+    hint: "Seller's asking price plus VIN, mileage, and seller contact.",
     req: true,
-    kind: "text",
-    placeholder: "VIN 5YJ3E1EA7JF..., 48,000 mi, $21,500, seller: Ana (415) 555-0000",
+    kind: "details",
+    placeholder: "VIN 5YJ3E1EA7JF..., 48,000 mi, seller: Ana (415) 555-0000",
   },
   {
     id: "fee",
@@ -64,7 +64,11 @@ const ITEMS: Item[] = [
   },
 ];
 
-type Value = { text: string; files: File[] };
+type Value = { text: string; price: string; files: File[] };
+
+export function flipFee(price: number) {
+  return Math.max(1500, price > 30000 ? Math.round(price * 0.05) : 0);
+}
 
 function isUrl(v: string) {
   try {
@@ -77,20 +81,22 @@ function isUrl(v: string) {
 
 function satisfied(item: Item, v: Value) {
   if (item.kind === "link") return isUrl(v.text);
+  if (item.kind === "details")
+    return v.text.trim().length >= 12 && Number(v.price) > 0;
   if (item.kind === "text") return v.text.trim().length >= 12;
   return v.files.length > 0;
 }
 
 function kindIcon(kind: ItemKind) {
   if (kind === "link") return <Link2 className="h-4 w-4" />;
-  if (kind === "text") return <FileText className="h-4 w-4" />;
+  if (kind === "text" || kind === "details") return <FileText className="h-4 w-4" />;
   if (kind === "photos") return <ImageIcon className="h-4 w-4" />;
   return <Upload className="h-4 w-4" />;
 }
 
-export function FlipSubmission() {
+export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
   const [values, setValues] = useState<Record<string, Value>>(
-    () => Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", files: [] }])) as Record<string, Value>,
+    () => Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", price: "", files: [] }])) as Record<string, Value>,
   );
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [open, setOpen] = useState<string | null>(ITEMS[0].id);
@@ -107,6 +113,8 @@ export function FlipSubmission() {
   const doneCount = ITEMS.filter((i) => checked[i.id]).length;
   const ready = reqDone === reqItems.length;
   const pct = useMemo(() => Math.round((doneCount / ITEMS.length) * 100), [doneCount]);
+  const askingPrice = Math.max(0, Number(values.details.price) || 0);
+  const fee = flipFee(askingPrice);
 
   if (submitted) {
     return (
@@ -124,7 +132,7 @@ export function FlipSubmission() {
           onClick={() => {
             setSubmitted(false);
             setChecked({});
-            setValues(Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", files: [] }])) as Record<string, Value>);
+            setValues(Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", price: "", files: [] }])) as Record<string, Value>);
           }}
           className="mt-6 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold text-ink hover:bg-accent"
         >
@@ -135,7 +143,8 @@ export function FlipSubmission() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
+    <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-start">
+      <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
       <h3 className="text-xl font-bold text-ink">Your submission checklist</h3>
       <p className="mt-1 text-sm text-ink-soft">
         Each item unlocks its checkbox only once the required link, text, or upload is actually
@@ -216,8 +225,32 @@ export function FlipSubmission() {
                     </>
                   )}
 
-                  {item.kind === "text" && (
+                  {(item.kind === "text" || item.kind === "details") && (
                     <>
+                      {item.kind === "details" && (
+                        <div className="mb-3">
+                          <label
+                            htmlFor="asking-price"
+                            className="text-xs font-bold uppercase tracking-widest text-ink-soft"
+                          >
+                            Seller's asking price
+                          </label>
+                          <div className="mt-1 flex items-center gap-2 rounded-lg border border-input bg-card px-3 py-2 focus-within:border-primary">
+                            <span className="text-sm font-bold text-ink-soft">$</span>
+                            <input
+                              id="asking-price"
+                              type="number"
+                              min={0}
+                              step={100}
+                              inputMode="numeric"
+                              value={v.price}
+                              onChange={(e) => setValue(item.id, { price: e.target.value })}
+                              placeholder="21500"
+                              className="w-full bg-transparent text-sm text-ink outline-none"
+                            />
+                          </div>
+                        </div>
+                      )}
                       <textarea
                         rows={3}
                         maxLength={1000}
@@ -228,7 +261,7 @@ export function FlipSubmission() {
                       />
                       {!ok && (
                         <p className="mt-2 text-xs text-ink-soft">
-                          Include VIN, mileage, asking price, and seller contact.
+                          Include the asking price plus VIN, mileage, and seller contact.
                         </p>
                       )}
                     </>
@@ -312,28 +345,64 @@ export function FlipSubmission() {
         })}
       </ul>
 
-      <div className="mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-border bg-background p-4">
-        <div className="min-w-0 flex-1">
-          <div className="font-display font-bold text-ink">
+      </div>
+
+      <div className="space-y-6 lg:sticky lg:top-24">
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <div className="font-display text-lg font-bold text-ink">
             {doneCount} of {ITEMS.length} complete
           </div>
-          <div className="text-xs text-ink-soft">
+          <div className="mt-1 text-xs text-ink-soft">
             {ready
               ? "All required items uploaded and checked — you can submit"
               : `${reqItems.length - reqDone} required item(s) left`}
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-border">
             <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
           </div>
+          <button
+            type="button"
+            disabled={!ready}
+            onClick={() => setSubmitted(true)}
+            className="mt-4 w-full rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Submit flip
+          </button>
         </div>
-        <button
-          type="button"
-          disabled={!ready}
-          onClick={() => setSubmitted(true)}
-          className="shrink-0 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          Submit flip
-        </button>
+
+        <div className="rounded-2xl bg-ink p-6 text-background">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-background/70">
+            Transparent pricing — price estimate
+          </div>
+          <div className="mt-3 flex items-baseline justify-between text-sm text-background/80">
+            <span>Seller's asking price</span>
+            <span className="font-semibold text-background">
+              {askingPrice > 0 ? `$${askingPrice.toLocaleString()}` : "—"}
+            </span>
+          </div>
+          <div className="mt-2 flex items-baseline justify-between text-sm text-background/80">
+            <span>Our profit (our fee)</span>
+            <span className="font-display text-2xl font-bold text-sun">
+              ${fee.toLocaleString()}
+            </span>
+          </div>
+          <div className="mt-2 flex items-baseline justify-between border-t border-background/20 pt-2 text-sm text-background/80">
+            <span>Estimated resale price to you</span>
+            <span className="font-semibold text-background">
+              {askingPrice > 0 ? `$${(askingPrice + fee).toLocaleString()}` : "—"}
+            </span>
+          </div>
+          <p className="mt-3 text-xs text-background/70">
+            {askingPrice > 30000
+              ? "Above $30,000, our fee is 5% of the price — shown here in full."
+              : "$1,500 flat below $30,000; above that it's 5% of the price, whichever is greater."}{" "}
+            That number is our entire profit — no markup hidden in the car price, and it's
+            charged <strong>after</strong> your rebate savings. This is a price estimate; final
+            figures are confirmed in writing before purchase.
+          </p>
+        </div>
+
+        {aside}
       </div>
     </div>
   );

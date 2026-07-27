@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 import { Zap, Gauge, DollarSign, Info, Receipt } from "lucide-react";
 
 
@@ -62,7 +62,6 @@ function VehiclesPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Popular vehicles</Eyebrow>
           <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             EVs we know inside and out.
           </h1>

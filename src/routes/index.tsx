@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef } from "react";
 import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
-import heroEv from "@/assets/hero-ev.jpg";
+import { PageShell, SectionHead } from "@/components/page-shell";
+import heroEv from "@/assets/hero-ev-real.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,7 +30,6 @@ function Home() {
       <section className="relative overflow-hidden bg-gradient-to-b from-sun-soft via-sun-soft/40 to-background">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_.95fr] md:pt-20 md:pb-24">
           <div className="flex flex-col justify-center">
-            <Eyebrow>California EV specialists</Eyebrow>
             <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink md:text-6xl">
               Drive electric.<br />
               <span className="text-primary">Keep every rebate</span> you're owed.
@@ -71,7 +70,7 @@ function Home() {
             <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
               <img
                 src={heroEv}
-                alt="Electric SUV in eMotion Autos green"
+                alt="Tesla Model 3 plugged into a public Level 2 charging station in a parking lot"
                 width={1280}
                 height={960}
                 className="h-full w-full object-cover"
@@ -120,7 +119,7 @@ function Home() {
           <SectionHead
             kicker="Why this exists"
             title="Rebates only work through an authorized dealer."
-            lead="CCFA vouchers, DCAP grants, and even the federal §25E credit require the car to be sold by a participating dealer. A private seller can't file the paperwork. We can."
+            lead="CCFA vouchers, DCAP grants, and even the federal 25E credit require the car to be sold by a participating dealer. A private seller can't file the paperwork. We can."
           />
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {[
@@ -173,7 +172,7 @@ function Home() {
                 {[
                   ["CCFA rebate", "$7,500"],
                   ["DCAP grant", "$2,000"],
-                  ["Federal §25E credit", "$4,000"],
+                  ["Federal 25E credit", "$4,000"],
                   ["Utility rebate (PG&E)", "$1,000"],
                   ["Home charger rebate", "$500"],
                 ].map(([k, v]) => (

@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Zap } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { ArrowRight, ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { PageShell, SectionHead } from "@/components/page-shell";
+import { gallery, type GalleryCar } from "@/data/gallery";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -9,46 +11,17 @@ export const Route = createFileRoute("/gallery")({
       {
         name: "description",
         content:
-          "Browse the used BEVs, PHEVs, trucks, and vans we track most for California buyers — with typical price ranges before rebates.",
+          "Browse real photos and specs of the used BEVs, PHEVs, trucks, and vans we track most for California buyers — seating, range, charging, and typical prices.",
       },
       { property: "og:title", content: "Vehicle gallery — EVs we know inside and out" },
       {
         property: "og:description",
-        content: "Popular BEVs, PHEVs, and electric trucks/vans with typical CA transaction prices.",
+        content: "Real photos, seating and range specs, and typical CA transaction prices.",
       },
     ],
   }),
   component: GalleryPage,
 });
-
-type GalleryCar = {
-  name: string;
-  years: string;
-  style: string;
-  range: string;
-  mpg?: string;
-  blurb: string;
-  price: string;
-  category: "BEV" | "PHEV" | "Truck/Van";
-};
-
-const gallery: GalleryCar[] = [
-  { name: "Chevrolet Bolt EV", years: "2018–2023", style: "Hatchback", range: "240–270 mi", blurb: "Great for running errands and occasional road trips.", price: "$16,000–$23,000", category: "BEV" },
-  { name: "Chevrolet Bolt EUV", years: "2022–2023", style: "Subcompact SUV", range: "240–250 mi", blurb: "A bigger Bolt with a more upright SUV-like driving position.", price: "$23,000–$28,000", category: "BEV" },
-  { name: "Kia Niro EV", years: "2018–2023", style: "Subcompact SUV", range: "230–240 mi", blurb: "Subcompact with surprising room and flexibility — Kona's cousin.", price: "$20,000–$32,000", category: "BEV" },
-  { name: "Tesla Model 3", years: "2018–2023", style: "Sedan", range: "200–300+ mi", blurb: "The original Tesla for the people.", price: "$23,000–$33,000", category: "BEV" },
-  { name: "Tesla Model Y", years: "2020–2023", style: "SUV", range: "200–300+ mi", blurb: "The world's best-selling EV for a reason.", price: "$27,000–$41,000", category: "BEV" },
-  { name: "Kia EV6", years: "2022–2023", style: "Wagon-like compact SUV", range: "250–300+ mi", blurb: "Fun to drive, long-range and practical.", price: "$27,000–$42,000", category: "BEV" },
-  { name: "Toyota Prius Prime", years: "2018–2023", style: "Hatchback", range: "EV 25–30 mi", mpg: "48 mpg", blurb: "A great car that's ready for all your adventures.", price: "$23,000–$37,000", category: "PHEV" },
-  { name: "Toyota RAV-4 Prime", years: "2022–2023", style: "Compact SUV", range: "EV 40 mi", mpg: "38 mpg", blurb: "Prius-like efficiency in an SUV package.", price: "$32,000–$49,000", category: "PHEV" },
-  { name: "Kia Niro PHEV", years: "2019–2023", style: "Compact SUV", range: "EV 25 mi", mpg: "37 mpg", blurb: "A great alternative to a Toyota PHEV.", price: "$21,000–$33,000", category: "PHEV" },
-  { name: "Honda Clarity", years: "2018–2021", style: "Sedan", range: "EV 47 mi", mpg: "42 mpg", blurb: "Legendary Honda efficiency in a futuristic package.", price: "$21,000–$30,000", category: "PHEV" },
-  { name: "Mitsubishi Outlander PHEV", years: "2022–2023", style: "5–7 seater SUV", range: "EV 24 mi", mpg: "60+ combined", blurb: "A three-row budget-friendly plug-in SUV.", price: "$25,000–$33,000", category: "PHEV" },
-  { name: "Hyundai Ioniq PHEV", years: "2018–2022", style: "Hatchback", range: "EV 29 mi", mpg: "52 combined", blurb: "Inexpensive, flexible, versatile, reliable.", price: "$20,000–$27,000", category: "PHEV" },
-  { name: "Ford F-150 Lightning", years: "2022–2023", style: "Pickup Truck", range: "240–275 mi", blurb: "Great for those who need a work truck.", price: "$35,000–$65,000", category: "Truck/Van" },
-  { name: "Rivian R1T", years: "2022–2023", style: "Pickup Truck", range: "225–300+ mi", blurb: "Great for those who want a truck for adventures.", price: "$50,000–$90,000", category: "Truck/Van" },
-  { name: "Chrysler Pacifica PHEV", years: "2018–2023", style: "Minivan", range: "EV 25 mi", mpg: "30 mpg", blurb: "A van for around town and road trips with the family.", price: "$23,000–$40,000", category: "Truck/Van" },
-];
 
 function GalleryPage() {
   const bevs = gallery.filter((g) => g.category === "BEV");
@@ -59,13 +32,12 @@ function GalleryPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Vehicle gallery</Eyebrow>
           <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             The EVs we know inside and out.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-ink-soft">
-            Use these as reference for your search brief. Prices are typical recent
-            California transactions before rebates.
+            Click through the photos of each model and check the specs. Prices are typical
+            recent California transactions before rebates.
           </p>
         </div>
       </section>
@@ -99,35 +71,102 @@ function GallerySection({ title, cars }: { title: string; cars: GalleryCar[] }) 
   return (
     <div className="mt-14 first:mt-0">
       <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">{title}</h2>
-      <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-card">
+      <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {cars.map((c) => (
-          <article key={c.name} className="grid gap-4 p-5 md:grid-cols-[1fr_1.4fr_auto] md:items-center md:gap-6 md:p-6">
-            <div className="grid h-32 place-items-center rounded-xl bg-gradient-to-br from-primary/15 via-primary/5 to-sun-soft text-primary md:h-28">
-              <Zap className="h-10 w-10 opacity-70" />
-            </div>
-            <div className="min-w-0">
-              <h3 className="text-lg font-bold text-ink underline decoration-ink/30 underline-offset-4">
-                {c.name}
-              </h3>
-              <ul className="mt-2 space-y-1 text-sm text-ink-soft">
-                <li>Years: {c.years}</li>
-                <li>Style: {c.style}</li>
-                <li>Range: {c.range}{c.mpg ? ` · ${c.mpg}` : ""}</li>
-                <li>{c.blurb}</li>
-              </ul>
-            </div>
-            <div className="flex flex-col items-start gap-3 md:items-end">
-              <div className="font-display text-lg font-bold text-ink">{c.price}</div>
-              <Link
-                to="/get-started"
-                className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-background hover:brightness-110"
-              >
-                Get your deal <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </article>
+          <CarCard key={c.name} car={c} />
         ))}
       </div>
+    </div>
+  );
+}
+
+function CarCard({ car }: { car: GalleryCar }) {
+  const [i, setI] = useState(0);
+  const total = car.photos.length;
+  const go = (d: number) => setI((p) => (p + d + total) % total);
+  const photo = car.photos[i];
+
+  return (
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="relative aspect-[4/3] bg-muted">
+        <img
+          src={photo.url}
+          alt={`${car.name} — ${photo.caption}`}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              aria-label={`Previous photo of ${car.name}`}
+              onClick={() => go(-1)}
+              className="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card/90 text-ink shadow hover:bg-card"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              aria-label={`Next photo of ${car.name}`}
+              onClick={() => go(1)}
+              className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card/90 text-ink shadow hover:bg-card"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+            <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">
+              {car.photos.map((p, idx) => (
+                <button
+                  key={p.url}
+                  type="button"
+                  aria-label={`Show photo ${idx + 1} of ${car.name}`}
+                  onClick={() => setI(idx)}
+                  className={`h-2 w-2 rounded-full transition ${
+                    idx === i ? "bg-primary" : "bg-card/80 hover:bg-card"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="text-lg font-bold text-ink">{car.name}</h3>
+        <p className="text-xs text-ink-soft">
+          {car.years} · {car.style}
+        </p>
+        <p className="mt-2 text-sm text-ink-soft">{car.blurb}</p>
+
+        <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+          <Spec label="Seats" value={`${car.seats} passengers`} icon />
+          <Spec label="Range" value={car.range + (car.mpg ? ` · ${car.mpg}` : "")} />
+          <Spec label="Drivetrain" value={car.drivetrain} />
+          <Spec label="Charging" value={car.charging} />
+          <Spec label="Cargo" value={car.cargo} />
+        </dl>
+
+        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+          <div className="font-display text-lg font-bold text-ink">{car.price}</div>
+          <Link
+            to="/get-started"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-background hover:brightness-110"
+          >
+            Get your deal <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function Spec({ label, value, icon }: { label: string; value: string; icon?: boolean }) {
+  return (
+    <div>
+      <dt className="flex items-center gap-1 font-bold uppercase tracking-widest text-ink-soft">
+        {icon && <Users className="h-3 w-3" />}
+        {label}
+      </dt>
+      <dd className="mt-0.5 text-ink">{value}</dd>
     </div>
   );
 }

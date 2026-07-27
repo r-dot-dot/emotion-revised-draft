@@ -11,7 +11,7 @@ import {
   Lock,
   Receipt,
 } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 
 export const Route = createFileRoute("/search")({
   head: () => ({
@@ -43,7 +43,6 @@ function SearchPage() {
       {/* HERO — waitlist framing */}
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-16">
-          <Eyebrow>Search · Join the waitlist</Eyebrow>
           <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             Tell us what you want. Join the search. We hand you the shortlist.
           </h1>
@@ -214,7 +213,9 @@ function PriceEstimateCalculator({ budget }: { budget: number }) {
   const customTotal = selected.reduce((a, c) => a + c.fee, 0);
   // Mock rebate savings (rough placeholder — real number lives on /calculator)
   const mockSavings = 9500;
-  const estimate = budget + customTotal - mockSavings;
+  // Our entire profit: $1,500 flat, or 5% of the vehicle price above $30k
+  const ourProfit = Math.max(1500, budget > 30000 ? Math.round(budget * 0.05) : 0);
+  const estimate = budget + customTotal - mockSavings + ourProfit;
 
   return (
     <section className="border-t border-border bg-muted/40 py-16">
@@ -308,6 +309,16 @@ function PriceEstimateCalculator({ budget }: { budget: number }) {
                 <span className="font-semibold">− ${mockSavings.toLocaleString()}</span>
               </div>
 
+              <div className="mt-3 flex items-center justify-between border-b border-dashed border-ink/20 pb-2">
+                <span>+ Our profit (our fee)</span>
+                <span className="font-semibold">+ ${ourProfit.toLocaleString()}</span>
+              </div>
+              <p className="mt-2 text-[11px] leading-relaxed text-ink-soft">
+                Full transparency: our profit updates with the vehicle price — $1,500 flat, or
+                5% once the car is above $30,000 — and it's charged after your rebate savings.
+                Nothing else is marked up.
+              </p>
+
               <div className="mt-5 flex items-end justify-between rounded-xl bg-ink px-4 py-4 text-background">
                 <div>
                   <div className="text-[10px] font-bold uppercase tracking-widest text-background/70">Rough estimate</div>
@@ -318,8 +329,9 @@ function PriceEstimateCalculator({ budget }: { budget: number }) {
                 </div>
               </div>
               <p className="mt-4 text-[11px] text-ink-soft">
-                Preview only. Real numbers activate once your brief is approved.
+                Price estimate only. Real numbers activate once your brief is approved.
               </p>
+
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 import {
   Accordion,
   AccordionContent,
@@ -25,7 +25,6 @@ function ChargingPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-sun-soft to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Charging</Eyebrow>
           <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             How charging actually works — and what you'll actually use.
           </h1>
