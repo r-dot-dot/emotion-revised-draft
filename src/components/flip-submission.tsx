@@ -113,6 +113,8 @@ export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
   const doneCount = ITEMS.filter((i) => checked[i.id]).length;
   const ready = reqDone === reqItems.length;
   const pct = useMemo(() => Math.round((doneCount / ITEMS.length) * 100), [doneCount]);
+  const askingPrice = Math.max(0, Number(values.details.price) || 0);
+  const fee = flipFee(askingPrice);
 
   if (submitted) {
     return (
