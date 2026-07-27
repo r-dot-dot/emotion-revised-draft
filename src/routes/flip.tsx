@@ -109,33 +109,35 @@ function FlipPage() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHead kicker="Before you submit" title="What we need from you" lead="Paste the links and upload the documents — each checkbox stays locked until its item is actually provided." />
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-            <FlipSubmission />
+          <div className="mt-10">
+            <FlipSubmission
+              aside={
+                <aside className="rounded-2xl border border-border bg-card p-6">
+                  <h4 className="text-lg font-bold text-ink">How submission works</h4>
+                  <ul className="mt-3 space-y-3 text-sm text-ink-soft">
+                    <li className="flex gap-2">
+                      <Upload className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      Documents accept PDF, JPG, or PNG. Photos can be uploaded in bulk.
+                    </li>
+                    <li className="flex gap-2">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      A checkbox only unlocks after the link is pasted or the file is attached.
+                    </li>
+                    <li className="flex gap-2">
+                      <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      Submit becomes available once every required item is checked. We confirm
+                      receipt within one business day.
+                    </li>
+                  </ul>
 
-            <aside className="rounded-2xl border border-border bg-card p-6 md:p-8">
-              <h4 className="text-lg font-bold text-ink">How submission works</h4>
-              <ul className="mt-3 space-y-3 text-sm text-ink-soft">
-                <li className="flex gap-2">
-                  <Upload className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  Documents accept PDF, JPG, or PNG. Photos can be uploaded in bulk.
-                </li>
-                <li className="flex gap-2">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  A checkbox only unlocks after the link is pasted or the file is attached.
-                </li>
-                <li className="flex gap-2">
-                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  Submit becomes available once every required item is checked. We confirm
-                  receipt within one business day.
-                </li>
-              </ul>
-
-              <div className="mt-6 rounded-2xl bg-ink p-5 text-background">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Our fee</div>
-                <div className="mt-1 font-display text-3xl font-bold">$1,500 flat</div>
-                <div className="mt-1 text-xs text-primary-foreground/80">On vehicles above $30,000, the fee becomes 5% of the purchase price if that's greater. Charged <strong>after</strong> your rebate savings — never before.</div>
-              </div>
-            </aside>
+                  <div className="mt-6 rounded-2xl bg-ink p-5 text-background">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Our fee</div>
+                    <div className="mt-1 font-display text-3xl font-bold leading-tight">$1,500 flat</div>
+                    <div className="mt-2 text-xs text-primary-foreground/80">On vehicles above $30,000, the fee becomes 5% of the purchase price if that's greater. Charged <strong>after</strong> your rebate savings — never before.</div>
+                  </div>
+                </aside>
+              }
+            />
           </div>
         </div>
       </section>
