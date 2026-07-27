@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Check, Upload, Link2, FileText, Image as ImageIcon, X, Lock } from "lucide-react";
 
-type ItemKind = "link" | "text" | "file" | "photos";
+type ItemKind = "link" | "text" | "details" | "file" | "photos";
 
 type Item = {
   id: string;
@@ -64,7 +64,11 @@ const ITEMS: Item[] = [
   },
 ];
 
-type Value = { text: string; files: File[] };
+type Value = { text: string; price: string; files: File[] };
+
+export function flipFee(price: number) {
+  return Math.max(1500, price > 30000 ? Math.round(price * 0.05) : 0);
+}
 
 function isUrl(v: string) {
   try {
@@ -77,20 +81,22 @@ function isUrl(v: string) {
 
 function satisfied(item: Item, v: Value) {
   if (item.kind === "link") return isUrl(v.text);
+  if (item.kind === "details")
+    return v.text.trim().length >= 12 && Number(v.price) > 0;
   if (item.kind === "text") return v.text.trim().length >= 12;
   return v.files.length > 0;
 }
 
 function kindIcon(kind: ItemKind) {
   if (kind === "link") return <Link2 className="h-4 w-4" />;
-  if (kind === "text") return <FileText className="h-4 w-4" />;
+  if (kind === "text" || kind === "details") return <FileText className="h-4 w-4" />;
   if (kind === "photos") return <ImageIcon className="h-4 w-4" />;
   return <Upload className="h-4 w-4" />;
 }
 
 export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
   const [values, setValues] = useState<Record<string, Value>>(
-    () => Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", files: [] }])) as Record<string, Value>,
+    () => Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", price: "", files: [] }])) as Record<string, Value>,
   );
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [open, setOpen] = useState<string | null>(ITEMS[0].id);
@@ -124,7 +130,7 @@ export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
           onClick={() => {
             setSubmitted(false);
             setChecked({});
-            setValues(Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", files: [] }])) as Record<string, Value>);
+            setValues(Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", price: "", files: [] }])) as Record<string, Value>);
           }}
           className="mt-6 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold text-ink hover:bg-accent"
         >
@@ -217,7 +223,7 @@ export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
                     </>
                   )}
 
-                  {item.kind === "text" && (
+                  {(item.kind === "text" || item.kind === "details") && (
                     <>
                       <textarea
                         rows={3}
