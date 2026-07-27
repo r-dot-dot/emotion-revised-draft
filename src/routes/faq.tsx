@@ -24,7 +24,7 @@ const groups: { title: string; items: [string, React.ReactNode][] }[] = [
   {
     title: "The basics",
     items: [
-      ["Why buy used instead of new?", <p>Used EVs are where the value is. A three-year-old EV has usually depreciated 40%+ and still qualifies for the federal §25E used credit — something no new car gets.</p>],
+      ["Why buy used instead of new?", <p>Used EVs are where the value is. A three-year-old EV has usually depreciated 40%+ and still qualifies for the federal 25E used credit — something no new car gets.</p>],
       ["Do EV batteries really last?", <p>Modern EV batteries routinely last 200,000+ miles. We include a battery health report on every car we sell or flip.</p>],
     ],
   },
@@ -32,7 +32,7 @@ const groups: { title: string; items: [string, React.ReactNode][] }[] = [
     title: "Rebates & incentives",
     items: [
       ["Can I stack CCFA and DCAP?", <p>No — you pick one per vehicle. You can still stack whichever you choose with the federal credit and utility rebates.</p>],
-      ["When do I get the money?", <p>Federal §25E and §30D come off the price at purchase. CCFA and DCAP arrive as a check or ACH within a few weeks of purchase.</p>],
+      ["When do I get the money?", <p>Federal 25E and 30D come off the price at purchase. CCFA and DCAP arrive as a check or ACH within a few weeks of purchase.</p>],
     ],
   },
   {

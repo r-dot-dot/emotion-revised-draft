@@ -10,7 +10,7 @@ export const Route = createFileRoute("/calculator")({
       {
         name: "description",
         content:
-          "Estimate your CCFA, DCAP, federal §30D/§25E, utility, and charger rebates in under a minute. California drivers only.",
+          "Estimate your CCFA, DCAP, federal 30D/25E, utility, and charger rebates in under a minute. California drivers only.",
       },
       { property: "og:title", content: "Savings Calculator — Stack every EV rebate" },
       { property: "og:description", content: "See your rebate stack in under a minute." },
@@ -36,7 +36,7 @@ function cc4aCap(hh: number) {
 }
 
 // Build discrete income brackets that anchor to real thresholds — CC4A cap,
-// 2× cap (moderate ceiling), and federal §25E / §30D single-filer caps ($75k, $150k).
+// 2× cap (moderate ceiling), and federal 25E / 30D single-filer caps ($75k, $150k).
 function incomeBrackets(hh: number): number[] {
   const cap = cc4aCap(hh);
   const raw = [
@@ -46,10 +46,10 @@ function incomeBrackets(hh: number): number[] {
     cap,                               // CC4A income limit
     Math.round(cap * 1.25 / 500) * 500,
     Math.round(cap * 1.5 / 500) * 500,
-    75000,                             // Federal §25E single filer cap
+    75000,                             // Federal 25E single filer cap
     Math.round(cap * 2 / 500) * 500,
     100000,
-    150000,                            // Federal §30D single filer cap
+    150000,                            // Federal 30D single filer cap
     200000,
     300000,
   ];
@@ -84,7 +84,7 @@ function CalculatorPage() {
     if (income <= cap) dcap = 5000;
     else if (income <= cap * 1.25) dcap = 2500;
 
-    // Federal §25E (used, $75k single cap) / §30D (new, $150k single cap)
+    // Federal 25E (used, $75k single cap) / 30D (new, $150k single cap)
     const fedCap = vType === "used" ? 75000 : 150000;
     const fed = income <= fedCap ? (vType === "used" ? 4000 : 7500) : 0;
 
@@ -111,7 +111,7 @@ function CalculatorPage() {
             Your rebate stack, in under a minute.
           </h1>
           <p className="mt-4 max-w-2xl text-ink-soft">
-            California-only. Estimates draw from Clean Cars 4 All, DCAP, federal §25E/§30D,
+            California-only. Estimates draw from Clean Cars 4 All, DCAP, federal 25E/30D,
             the 2026 first-time EV buyer rebate, utility rebates, and home-charger programs.
             Not a formal eligibility determination.
           </p>
@@ -217,7 +217,7 @@ function CalculatorPage() {
             <ul className="mt-8 space-y-3 text-sm">
               <Row k="Clean Cars 4 All rebate" v={results.ccfa} />
               <Row k="DCAP grant" v={results.dcap} />
-              <Row k={`Federal ${vType === "used" ? "§25E" : "§30D"} credit`} v={results.fed} />
+              <Row k={`Federal ${vType === "used" ? "25E" : "30D"} credit`} v={results.fed} />
               <Row k={`First-time EV buyer rebate (2026, ${vType})`} v={results.firstTime} />
               <Row k="Utility rebate (typical)" v={results.utility} />
               <Row k="Home charger rebate" v={results.charger} />

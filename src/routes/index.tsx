@@ -120,7 +120,7 @@ function Home() {
           <SectionHead
             kicker="Why this exists"
             title="Rebates only work through an authorized dealer."
-            lead="CCFA vouchers, DCAP grants, and even the federal §25E credit require the car to be sold by a participating dealer. A private seller can't file the paperwork. We can."
+            lead="CCFA vouchers, DCAP grants, and even the federal 25E credit require the car to be sold by a participating dealer. A private seller can't file the paperwork. We can."
           />
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {[
@@ -173,7 +173,7 @@ function Home() {
                 {[
                   ["CCFA rebate", "$7,500"],
                   ["DCAP grant", "$2,000"],
-                  ["Federal §25E credit", "$4,000"],
+                  ["Federal 25E credit", "$4,000"],
                   ["Utility rebate (PG&E)", "$1,000"],
                   ["Home charger rebate", "$500"],
                 ].map(([k, v]) => (
