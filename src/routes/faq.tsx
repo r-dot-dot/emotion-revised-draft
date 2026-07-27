@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 import {
   Accordion,
   AccordionContent,
@@ -58,7 +58,6 @@ function FaqPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-sun-soft to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Frequently asked</Eyebrow>
           <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             Straight answers. No dealer fog.
           </h1>

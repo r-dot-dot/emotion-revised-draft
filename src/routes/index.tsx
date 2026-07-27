@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef } from "react";
 import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 import heroEv from "@/assets/hero-ev.jpg";
 
 export const Route = createFileRoute("/")({
@@ -30,7 +30,6 @@ function Home() {
       <section className="relative overflow-hidden bg-gradient-to-b from-sun-soft via-sun-soft/40 to-background">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-14 md:grid-cols-[1.05fr_.95fr] md:pt-20 md:pb-24">
           <div className="flex flex-col justify-center">
-            <Eyebrow>California EV specialists</Eyebrow>
             <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink md:text-6xl">
               Drive electric.<br />
               <span className="text-primary">Keep every rebate</span> you're owed.

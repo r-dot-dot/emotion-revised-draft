@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { CheckCircle2, ArrowRight, Zap, Search as SearchIcon } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 
 export const Route = createFileRoute("/get-started")({
   head: () => ({
@@ -37,7 +37,6 @@ function GetStartedPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Get started</Eyebrow>
           <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             One form. One callback. Same business day.
           </h1>

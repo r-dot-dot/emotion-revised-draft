@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { MapPin, Phone, Star, ArrowRight } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 
 export const Route = createFileRoute("/service")({
   head: () => ({
@@ -39,7 +39,6 @@ function ServicePage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Service partners</Eyebrow>
           <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             Trusted EV shops, verified by us.
           </h1>

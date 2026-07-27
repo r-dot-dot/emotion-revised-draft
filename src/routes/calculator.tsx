@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 
 export const Route = createFileRoute("/calculator")({
   head: () => ({
@@ -106,7 +106,6 @@ function CalculatorPage() {
     <PageShell>
       <section className="border-b border-border bg-gradient-to-b from-primary/10 to-background">
         <div className="mx-auto max-w-7xl px-4 py-14">
-          <Eyebrow>Savings Calculator</Eyebrow>
           <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             Your rebate stack, in under a minute.
           </h1>

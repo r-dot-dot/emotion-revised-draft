@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Upload, ArrowRight } from "lucide-react";
-import { PageShell, Eyebrow, SectionHead } from "@/components/page-shell";
+import { PageShell, SectionHead } from "@/components/page-shell";
 import { FlipSubmission } from "@/components/flip-submission";
 import {
   Accordion,
@@ -44,7 +44,6 @@ function FlipPage() {
       {/* HERO */}
       <section className="border-b border-border bg-gradient-to-b from-sun-soft to-background">
         <div className="mx-auto max-w-7xl px-4 py-16">
-          <Eyebrow>Path A · You found the car</Eyebrow>
           <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             Found the car yourself? We'll make the rebates work.
           </h1>
