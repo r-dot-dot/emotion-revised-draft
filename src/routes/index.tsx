@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef } from "react";
 import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageShell, SectionHead } from "@/components/page-shell";
-import heroEv from "@/assets/hero-ev.jpg";
+import heroEv from "@/assets/hero-ev-real.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,7 +70,7 @@ function Home() {
             <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
               <img
                 src={heroEv}
-                alt="Electric SUV in eMotion Autos green"
+                alt="Tesla Model 3 plugged into a public Level 2 charging station in a parking lot"
                 width={1280}
                 height={960}
                 className="h-full w-full object-cover"
