@@ -309,6 +309,16 @@ function PriceEstimateCalculator({ budget }: { budget: number }) {
                 <span className="font-semibold">− ${mockSavings.toLocaleString()}</span>
               </div>
 
+              <div className="mt-3 flex items-center justify-between border-b border-dashed border-ink/20 pb-2">
+                <span>+ Our profit (our fee)</span>
+                <span className="font-semibold">+ ${ourProfit.toLocaleString()}</span>
+              </div>
+              <p className="mt-2 text-[11px] leading-relaxed text-ink-soft">
+                Full transparency: our profit updates with the vehicle price — $1,500 flat, or
+                5% once the car is above $30,000 — and it's charged after your rebate savings.
+                Nothing else is marked up.
+              </p>
+
               <div className="mt-5 flex items-end justify-between rounded-xl bg-ink px-4 py-4 text-background">
                 <div>
                   <div className="text-[10px] font-bold uppercase tracking-widest text-background/70">Rough estimate</div>
@@ -319,8 +329,9 @@ function PriceEstimateCalculator({ budget }: { budget: number }) {
                 </div>
               </div>
               <p className="mt-4 text-[11px] text-ink-soft">
-                Preview only. Real numbers activate once your brief is approved.
+                Price estimate only. Real numbers activate once your brief is approved.
               </p>
+
             </div>
           </div>
         </div>
