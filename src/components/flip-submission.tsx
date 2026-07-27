@@ -367,6 +367,39 @@ export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
             Submit flip
           </button>
         </div>
+
+        <div className="rounded-2xl bg-ink p-6 text-background">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-background/70">
+            Transparent pricing — price estimate
+          </div>
+          <div className="mt-3 flex items-baseline justify-between text-sm text-background/80">
+            <span>Seller's asking price</span>
+            <span className="font-semibold text-background">
+              {askingPrice > 0 ? `$${askingPrice.toLocaleString()}` : "—"}
+            </span>
+          </div>
+          <div className="mt-2 flex items-baseline justify-between text-sm text-background/80">
+            <span>Our profit (our fee)</span>
+            <span className="font-display text-2xl font-bold text-sun">
+              ${fee.toLocaleString()}
+            </span>
+          </div>
+          <div className="mt-2 flex items-baseline justify-between border-t border-background/20 pt-2 text-sm text-background/80">
+            <span>Estimated resale price to you</span>
+            <span className="font-semibold text-background">
+              {askingPrice > 0 ? `$${(askingPrice + fee).toLocaleString()}` : "—"}
+            </span>
+          </div>
+          <p className="mt-3 text-xs text-background/70">
+            {askingPrice > 30000
+              ? "Above $30,000, our fee is 5% of the price — shown here in full."
+              : "$1,500 flat below $30,000; above that it's 5% of the price, whichever is greater."}{" "}
+            That number is our entire profit — no markup hidden in the car price, and it's
+            charged <strong>after</strong> your rebate savings. This is a price estimate; final
+            figures are confirmed in writing before purchase.
+          </p>
+        </div>
+
         {aside}
       </div>
     </div>
