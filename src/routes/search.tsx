@@ -213,7 +213,9 @@ function PriceEstimateCalculator({ budget }: { budget: number }) {
   const customTotal = selected.reduce((a, c) => a + c.fee, 0);
   // Mock rebate savings (rough placeholder — real number lives on /calculator)
   const mockSavings = 9500;
-  const estimate = budget + customTotal - mockSavings;
+  // Our entire profit: $1,500 flat, or 5% of the vehicle price above $30k
+  const ourProfit = Math.max(1500, budget > 30000 ? Math.round(budget * 0.05) : 0);
+  const estimate = budget + customTotal - mockSavings + ourProfit;
 
   return (
     <section className="border-t border-border bg-muted/40 py-16">
