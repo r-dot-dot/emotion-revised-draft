@@ -40,11 +40,11 @@ const ITEMS: Item[] = [
   },
   {
     id: "details",
-    title: "Vehicle details",
-    hint: "VIN, mileage, asking price, and seller contact — all in one box.",
+    title: "Vehicle details & asking price",
+    hint: "Seller's asking price plus VIN, mileage, and seller contact.",
     req: true,
-    kind: "text",
-    placeholder: "VIN 5YJ3E1EA7JF..., 48,000 mi, $21,500, seller: Ana (415) 555-0000",
+    kind: "details",
+    placeholder: "VIN 5YJ3E1EA7JF..., 48,000 mi, seller: Ana (415) 555-0000",
   },
   {
     id: "fee",
