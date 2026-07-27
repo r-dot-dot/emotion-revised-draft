@@ -88,7 +88,7 @@ function kindIcon(kind: ItemKind) {
   return <Upload className="h-4 w-4" />;
 }
 
-export function FlipSubmission() {
+export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
   const [values, setValues] = useState<Record<string, Value>>(
     () => Object.fromEntries(ITEMS.map((i) => [i.id, { text: "", files: [] }])) as Record<string, Value>,
   );
