@@ -129,11 +129,6 @@ function FlipPage() {
                     </li>
                   </ul>
 
-                  <div className="mt-6 rounded-2xl bg-ink p-5 text-background">
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Our fee</div>
-                    <div className="mt-1 font-display text-3xl font-bold leading-tight">$1,500 flat</div>
-                    <div className="mt-2 text-xs text-primary-foreground/80">On vehicles above $30,000, the fee becomes 5% of the purchase price if that's greater. Charged <strong>after</strong> your rebate savings — never before.</div>
-                  </div>
                 </aside>
               }
             />
