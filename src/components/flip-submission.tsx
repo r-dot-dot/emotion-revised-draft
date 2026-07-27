@@ -225,6 +225,30 @@ export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
 
                   {(item.kind === "text" || item.kind === "details") && (
                     <>
+                      {item.kind === "details" && (
+                        <div className="mb-3">
+                          <label
+                            htmlFor="asking-price"
+                            className="text-xs font-bold uppercase tracking-widest text-ink-soft"
+                          >
+                            Seller's asking price
+                          </label>
+                          <div className="mt-1 flex items-center gap-2 rounded-lg border border-input bg-card px-3 py-2 focus-within:border-primary">
+                            <span className="text-sm font-bold text-ink-soft">$</span>
+                            <input
+                              id="asking-price"
+                              type="number"
+                              min={0}
+                              step={100}
+                              inputMode="numeric"
+                              value={v.price}
+                              onChange={(e) => setValue(item.id, { price: e.target.value })}
+                              placeholder="21500"
+                              className="w-full bg-transparent text-sm text-ink outline-none"
+                            />
+                          </div>
+                        </div>
+                      )}
                       <textarea
                         rows={3}
                         maxLength={1000}
@@ -235,7 +259,7 @@ export function FlipSubmission({ aside }: { aside?: React.ReactNode }) {
                       />
                       {!ok && (
                         <p className="mt-2 text-xs text-ink-soft">
-                          Include VIN, mileage, asking price, and seller contact.
+                          Include the asking price plus VIN, mileage, and seller contact.
                         </p>
                       )}
                     </>
