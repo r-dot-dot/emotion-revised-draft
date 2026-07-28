@@ -70,9 +70,9 @@ function Home() {
             <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
               <img
                 src={heroEv}
-                alt="Tesla Model 3 plugged into a public Level 2 charging station in a parking lot"
-                width={1280}
-                height={960}
+                alt="Red 2024 Tesla Model 3 electric sedan photographed from the front three-quarter angle"
+                width={1920}
+                height={1176}
                 className="h-full w-full object-cover"
               />
             </div>
