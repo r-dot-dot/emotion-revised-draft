@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef } from "react";
 import { ArrowRight, Car, Search as SearchIcon, Calculator, Zap, ShieldCheck, Sparkles, Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageShell, SectionHead } from "@/components/page-shell";
-import heroEv from "@/assets/hero-ev-real.jpg";
+import heroEv from "@/assets/hero-mach-e.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -69,10 +69,10 @@ function Home() {
             <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-primary/10 blur-2xl" />
             <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
               <img
-                src={heroEv}
-                alt="Red 2024 Tesla Model 3 electric sedan photographed from the front three-quarter angle"
-                width={1920}
-                height={1176}
+                src={heroEv.url}
+                alt="White Ford Mustang Mach-E electric SUV driving on a winding mountain road"
+                width={1200}
+                height={675}
                 className="h-full w-full object-cover"
               />
             </div>
